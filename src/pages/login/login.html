@@ -1,0 +1,31 @@
+<ion-content padding>
+  
+    <div class="mainCenterContainer">
+      <div class="fullWidth mainCenterContent">
+      <div class="homeHeader fullWidth">
+        <h1 class="centerText colorTheme"><ion-icon name="logo-instagram" item-start></ion-icon> T O R S</h1>
+        <p class="centerText colorGrey" [ngClass]="{ errorMsg : loginData.isMessageError}">{{loginData.message}}</p>
+      </div>
+      <ion-list>
+  
+      <ion-item>
+        <ion-icon name="person" class="colorGrey" item-start></ion-icon>
+        <ion-label stacked>Username</ion-label>
+        <ion-input type="text" [(ngModel)]="loginData.username"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-icon name="lock" class="colorGrey" item-start></ion-icon>
+        <ion-label stacked>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+      </ion-item>
+
+      <ion-item class="centerText">
+          <br/>
+          <button ion-button class="defaultBtnSize" (click)="login()">Login</button>
+      </ion-item>
+    
+    </ion-list>
+    </div>
+    </div>
+  </ion-content>

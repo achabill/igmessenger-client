@@ -1,0 +1,135 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.fullWidth{
+
+    width: 100% !important;
+}
+
+.fullHeight{
+
+    height: 100% !important;
+}
+
+.fullWH{
+
+    width: 100%;
+    height: 100% !important;
+}
+
+.centerText{
+
+    text-align: center;
+}
+
+.colorGrey{
+
+    color: #444;
+}
+
+.errorMsg{
+
+    color: #ff1d49 !important;
+}
+
+.labelbad{
+
+    color: #ff1d49;
+}
+
+.labelmedium{
+    
+    color: #fbbd08;
+}
+
+.labelgood{
+        
+    color: #61ef82;
+}
+
+.colorTheme{
+    
+    color: #2185d0;
+}
+
+.mainCenterContainer{
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.homeHeader{
+
+    margin: 0 0 30px 0;
+}
+
+.defaultBtnSize{
+
+    height: 40px !important;
+    width: 100px !important;
+}
+
+.themeBg{
+
+    background-color: #488aff;
+}
+
+.userImg{
+
+    border-radius: 10px;
+}
+
+.userImg.lb{
+    background-color: #ff1d49;
+    border: 5px solid #ff1d49;
+}
+
+.userImg.lm{
+    background-color: #fbbd08;
+    border: 5px solid #fbbd08;
+}
+
+.userImg.lg{
+    background-color: #61ef82;
+    border: 5px solid #61ef82;
+}
+
+.briefItem{
+
+    color: #2185d0 !important;
+}
+
+.timeItem{
+
+    font-size: 1.2rem !important;
+    color: #999 !important;
+}
+
+.sampleItem{
+
+    color: #555 !important;
+}
+
+.usernameItem{
+
+    font-weight: bold !important;
+    color: #555 !important;
+}
+
