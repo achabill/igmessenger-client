@@ -49,8 +49,8 @@ export class LoginPage {
 
     this.loginData = {
 
-      username: "instafool100",
-      password: "BENZ45xxx",
+      username: "lewismetuge",
+      password: "",
       message: "Please enter your IG credentials",
       isMessageError: false
     }

@@ -13,39 +13,63 @@
               <ion-icon name="refresh"></ion-icon>
             </button>
         <button ion-button icon-only>
-          <ion-icon name="square" class="labelgood"></ion-icon>
+          <ion-icon name="radio-button-on" class="labelgood"></ion-icon>
         </button>
         <button ion-button icon-only>
-            <ion-icon name="square" class="labelmedium"></ion-icon>
+            <ion-icon name="radio-button-on" class="labelmedium"></ion-icon>
           </button>
           <button ion-button icon-only>
-              <ion-icon name="square" class="labelbad"></ion-icon>
+              <ion-icon name="radio-button-on" class="labelbad"></ion-icon>
           </button>
+          <button ion-button icon-only>
+              <img [src]="profilePicture" class="headerDp">
+          </button> 
       </ion-buttons>
     </ion-toolbar>
-    <ion-searchbar class="themeBg"></ion-searchbar>
+    <ion-toolbar color="primary">
+        <ion-searchbar 
+        [(ngModel)]="searchQuery"
+        (ionInput)="searchFeed($event)"
+        (ionCancel)="searchFeed($event)" placeholder="Search Chats..."></ion-searchbar>
+    </ion-toolbar>
   </ion-header>
 
 <ion-content>
   <ion-list>
 
-      <button ion-item>
+      <!-- <button ion-item>
         <ion-avatar item-start class="userImg lb">
-          <img src="/assets/imgs/img.png">
+          <img src="/assets/imgs/img1.jpg">
         </ion-avatar>
         <h2 class="usernameItem">Lando Freeman</h2>
         <h3 class="sampleItem">hey man did you get my text</h3>
         <p class="timeItem">24/02/2017 @ 22:32</p>
-        <!-- <div item-end class="centerText briefItem">
+         <div item-end class="centerText briefItem">
           <ion-icon name="stopwatch"></ion-icon>
           <br/>
           <span>22:50</span>
-        </div> -->
-      </button>
+        </div>
+      </button> -->
 
-      <button ion-item>
+      <ng-container *ngFor="let thread of threads; let i = index">
+      <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)">
+          <ion-avatar item-start class="userImg ld">
+            <img src="{{thread.users[0].profile_pic_url}}">
+          </ion-avatar>
+          <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
+          <h3 class="sampleItem">{{parseFeedBrief(thread.items[0])}}</h3>
+          <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
+          <!-- <div item-end class="centerText briefItem">
+            <ion-icon name="stopwatch"></ion-icon>
+            <br/>
+            <span>00:50</span>
+          </div> -->
+        </button>
+        </ng-container>
+
+      <!-- <button ion-item>
           <ion-avatar item-start class="userImg lg">
-            <img src="/assets/imgs/img.png">
+            <img src="/assets/imgs/img2.jpg">
           </ion-avatar>
           <h2 class="usernameItem">Rick Morty</h2>
           <h3 class="sampleItem">wup with you man?</h3>
@@ -59,7 +83,7 @@
 
         <button ion-item>
             <ion-avatar item-start class="userImg lm">
-              <img src="/assets/imgs/img.png">
+              <img src="/assets/imgs/img3.jpg">
             </ion-avatar>
             <h2 class="usernameItem">Scott Free</h2>
             <h3 class="sampleItem">lets go out for drinks man...</h3>
@@ -69,7 +93,7 @@
               <br/>
               <span>02:50</span>
             </div>
-          </button>
+          </button> -->
 
   </ion-list>
 </ion-content>

@@ -17,7 +17,17 @@ export class UtilService {
     let tempArray = [];
     for(let i = 0; i < keysArray.length; i++){
 
-        tempArray.push(Object.assign({}, obj[keysArray[i]], { id: keysArray[i]}));
+        let temp: any = {};
+        if(typeof obj[keysArray[i]] == "string"){
+
+            let temp2: any = {};
+            temp2[keysArray[i]] = obj[keysArray[i]];
+            temp = Object.assign({}, temp2, { id: keysArray[i]});
+        }else{
+
+            temp = Object.assign({}, obj[keysArray[i]], { id: keysArray[i]});
+        }
+        tempArray.push(temp);
     }
     return tempArray;
   }

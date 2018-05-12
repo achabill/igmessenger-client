@@ -5,6 +5,7 @@ export class VarsService {
 
   private isUserLoggedin: boolean;
   private userLoginInfo: any;
+  private userIgInfo: any;
   
   constructor() {
     
@@ -34,6 +35,17 @@ export class VarsService {
   getUserLoginInfo(): any {
    
     return this.userLoginInfo;
+  }
+
+  setUserIgInfo(info: any): void {
+   
+    this.setIsUserLoggedin(true);
+    this.userIgInfo = info;
+  }
+
+  getUserIgInfo(): any {
+   
+    return this.userIgInfo;
   }
 
 }

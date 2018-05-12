@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-navbar class="chatBoxNav">
+  <ion-toolbar color="primary">
+
+    <ion-title>@mrbean</ion-title>
+
+    <ion-buttons end>
+        <button ion-button icon-only>
+            <img src="/assets/imgs/img1.jpg" class="headerDp">
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
+  </ion-navbar>
+  <ion-toolbar color="primary" class="centerText">
+          <button ion-button icon-only start class="toolBarButton">
+              <ion-icon name="add-circle"></ion-icon>
+            </button>
+          <button ion-button icon-only class="toolBarButton">
+              <ion-icon name="chatboxes"></ion-icon>
+            </button>
+          <button ion-button icon-only end class="toolBarButton">
+              <ion-icon name="stopwatch"></ion-icon>
+            </button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list>
+
+    <ion-item class="oneChatItem received">
+        <ion-avatar item-start>
+          <img src="/assets/imgs/img1.jpg">
+        </ion-avatar>
+        <h2 class="username">@mrbean</h2>
+        <p class="msg">I've had a pretty messed up day. If we just...</p>
+        <span class="time">22 May, 2017 @ 12:45</span>
+    </ion-item>
+
+    <ion-item class="oneChatItem sent">
+        <ion-avatar item-end>
+          <img src="/assets/imgs/img0.jpg">
+        </ion-avatar>
+        <h2 class="username">@finn</h2>
+        <p class="msg">I've had a pretty messed up day. If we just...</p>
+        <span class="time">22 May, 2017 @ 12:45</span>
+      </ion-item>
+
+    
+
+</ion-list>
+</ion-content>
+<ion-footer no-border>
+    <ion-toolbar class="footerToolBar">
+        <ion-grid>
+            <ion-row>
+              <ion-col col-10>
+                  <ion-input type="text" placeholder="Username" class="chatInput"></ion-input>
+              </ion-col>
+              <ion-col col-2>
+                  <button ion-button>
+                      <ion-icon name="send"></ion-icon>
+                    </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>   
+    </ion-toolbar>
+</ion-footer>

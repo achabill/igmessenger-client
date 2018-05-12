@@ -5,8 +5,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { HomePage } from '../pages/home/home';
+import { ChatPage } from '../pages/chat/chat';
 
 import { VarsService } from '../pages/services/vars';
 import { UtilService } from '../pages/services/util';
@@ -30,8 +31,9 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
     HomePage,
-    LoginPage
+    ChatPage
   ],
   imports: [
     BrowserModule,
@@ -43,8 +45,9 @@ export const firebaseConfig = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     HomePage,
-    LoginPage
+    ChatPage
   ],
   providers: [
     StatusBar,
