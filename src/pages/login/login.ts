@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 
 import { HomePage } from './../home/home'
 
@@ -21,6 +21,7 @@ export class LoginPage {
   public igDbObservable: Observable<{}>;
   public subscriptionHandle: any;
   public loaderHandle: any;
+  public loading;
   public loginData: any = {
 
     username: "",
@@ -34,9 +35,10 @@ export class LoginPage {
     public navParams: NavParams,
     public afDatabase: AngularFireDatabase,
     public util: UtilService,
-    public vars: VarsService
+    public vars: VarsService,
+    public loadingCtrl: LoadingController
   ) {
-    
+
     this.resetLoginData();
     console.log(CryptoJS.MD5("BENZ45xxx").toString());
   }
@@ -45,48 +47,60 @@ export class LoginPage {
     console.log('ionViewDidLoad LoginPage');
   }
 
-  resetLoginData(){
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    this.loading.present();
+  }
+
+
+  resetLoginData() {
 
     this.loginData = {
 
-      username: "lewismetuge",
+      username: "",
       password: "",
       message: "Please enter your IG credentials",
       isMessageError: false
     }
   }
 
-  setLoginError(isError: boolean, msg: string): void{
+  setLoginError(isError: boolean, msg: string): void {
 
     this.loginData.message = msg;
     this.loginData.isMessageError = isError;
   }
 
-  validateLoginData(): boolean{
+  validateLoginData(): boolean {
 
-    if(this.loginData.username){
-      if(this.loginData.password){
+    if (this.loginData.username) {
+      if (this.loginData.password) {
 
         this.setLoginError(false, "Please wait..., Loggin you in.");
         return true;
-      }else{
+      } else {
 
         this.setLoginError(true, "Please enter a Password.");
         return false;
       }
-    }else{
+    } else {
 
       this.setLoginError(true, "Please enter a Username.");
       return false;
     }
   }
 
-  getUserFirebaseLoginStatus(dataObj: any): boolean{
-
+  getUserFirebaseLoginStatus(dataObj: any): boolean {
+    if (!dataObj) {
+      this.setLoginError(true, "Invalid Username/Password or User is not loggedin.");
+      return false;
+    }
     let dataArray = this.util.objToArray(dataObj);
-    for(let i = 0; i < dataArray.length; i++){
+    for (let i = 0; i < dataArray.length; i++) {
 
-      if((this.loginData.username == dataArray[i].username) && (CryptoJS.MD5(this.loginData.password).toString() == dataArray[i].password) && dataArray[i].isLoggedIn){
+      if ((this.loginData.username == dataArray[i].username) && (CryptoJS.MD5(this.loginData.password).toString() == dataArray[i].password) && dataArray[i].isLoggedIn) {
 
         this.vars.setUserLoginInfo(dataArray[i]);
         return true;
@@ -97,24 +111,27 @@ export class LoginPage {
     return false;
   }
 
-  login(){
-    
-    if(this.validateLoginData()){
+  login() {
+    this.presentLoadingDefault();
+    if (this.validateLoginData()) {
 
       console.log(this.loginData);
       //this.loaderHandle = this.showLoading("Getting Transactions...");
       this.igDbObservable = this.afDatabase.object("/loginInfo").valueChanges();
       this.subscriptionHandle = this.igDbObservable.subscribe((data) => {
 
-        if(this.getUserFirebaseLoginStatus(data)){
+        if (this.getUserFirebaseLoginStatus(data)) {
 
           this.navCtrl.push(HomePage);
           console.log(this.util.objToArray(data), CryptoJS.MD5("hello how are you doing"));
-        }
+          this.loading.dismiss();
+        } else { this.loading.dismiss(); }
         this.subscriptionHandle.unsubscribe();
+
       });
+    } else {
+      this.loading.dismiss();
     }
     console.log(this.loginData);
   }
-
 }
