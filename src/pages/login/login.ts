@@ -112,10 +112,9 @@ export class LoginPage {
   }
 
   login() {
-    this.presentLoadingDefault();
-    if (this.validateLoginData()) {
 
-      console.log(this.loginData);
+    if (this.validateLoginData()) {
+      this.presentLoadingDefault();
       //this.loaderHandle = this.showLoading("Getting Transactions...");
       this.igDbObservable = this.afDatabase.object("/loginInfo").valueChanges();
       this.subscriptionHandle = this.igDbObservable.subscribe((data) => {
@@ -125,13 +124,11 @@ export class LoginPage {
           this.navCtrl.push(HomePage);
           console.log(this.util.objToArray(data), CryptoJS.MD5("hello how are you doing"));
           this.loading.dismiss();
-        } else { this.loading.dismiss(); }
+        } else {
+          this.loading.dismiss();
+        }
         this.subscriptionHandle.unsubscribe();
-
       });
-    } else {
-      this.loading.dismiss();
     }
-    console.log(this.loginData);
   }
 }
