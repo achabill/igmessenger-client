@@ -6,19 +6,25 @@
 
     <ion-buttons end>
         <button ion-button icon-only>
+            <span>-{{vars.tempThread.threadTimer}}min</span>
+        </button>
+        <button ion-button icon-only *ngIf="vars.tempThread.labelColor != 'labelClear'">
+            <ion-icon name="radio-button-on" color="{{vars.tempThread.labelColor}}"></ion-icon>
+        </button>
+        <button ion-button icon-only (click)="goToProfile()">
             <img src="/assets/imgs/img1.jpg" class="headerDp">
         </button>
     </ion-buttons>
   </ion-toolbar>
   </ion-navbar>
   <ion-toolbar color="primary" class="centerText">
-          <button ion-button icon-only start class="toolBarButton">
+          <button ion-button icon-only start class="toolBarButton" (click)="addPhrase()">
               <ion-icon name="add-circle"></ion-icon>
             </button>
-          <button ion-button icon-only class="toolBarButton">
-              <ion-icon name="chatboxes"></ion-icon>
+          <button ion-button icon-only class="toolBarButton" (click)="presentPhraseActionSheet()">
+              <ion-icon name="chatbubbles"></ion-icon>
             </button>
-          <button ion-button icon-only end class="toolBarButton">
+          <button ion-button icon-only end class="toolBarButton" (click)="presentTimerActionSheet()">
               <ion-icon name="stopwatch"></ion-icon>
             </button>
   </ion-toolbar>

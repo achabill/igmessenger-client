@@ -22,7 +22,6 @@ export class HomePage {
   public subscriptionHandle: any;
   public loaderHandle: any;
   public profilePicture: string = "/assets/imgs/default_dp.png";
-  public threads: any[] = [];
   public searchQuery: string = "";
 
   constructor(
@@ -84,12 +83,41 @@ export class HomePage {
 
 }
 
+    checkIfThreadIsTimed(threadID: any): any{
+
+        for(let i = 0; i < this.vars.userTimers.length; i++){
+
+            if(threadID == this.vars.userTimers[i].id){
+
+                let now = Date.now();
+                let timeLeftInSec = (((this.vars.userTimers[i].duration + this.vars.userTimers[i].timeSet) - now)/(1000*60)).toFixed();
+
+                return timeLeftInSec;
+            }
+        }
+        return null;
+    }
+
+    checkIfThreadIsLabeled(threadID: any): any{
+
+        for(let i = 0; i < this.vars.labeledThreads.length; i++){
+
+            if(threadID == this.vars.labeledThreads[i].id){
+
+                return this.vars.labeledThreads[i].label;
+            }
+        }
+        return "labelClear";
+    }
+
   parseThreads(threads: any[]): any[]{
 
     let tempArray: any[] = []
     for(let i = 0; i < threads.length; i++){
-
-      tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true}));
+    
+        let threadLabel = this.checkIfThreadIsLabeled(threads[i].thread_id);
+        let threadTimer = this.checkIfThreadIsTimed(threads[i].thread_id);
+        tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer}));
     }
     return tempArray;
   }
@@ -103,8 +131,16 @@ export class HomePage {
         //this.subscriptionHandle.unsubscribe();
         this.vars.setUserIgInfo(data.user);
         this.profilePicture = data.user.profile_pic_url;
-        this.threads = this.parseThreads(data.threads);
-        console.log(this.threads);
+        this.vars.labeledThreads = this.util.objToArray(data.labels?data.labels:[]);
+        this.vars.userTimers = this.util.objToArray(data.timers?data.timers:[]);
+        this.vars.threads = this.parseThreads(data.threads);
+        console.log(this.vars.threads);
+        if(data.phrases){
+
+            console.log(this.util.objToArray(data.phrases));
+            this.vars.setUserPhrases(this.util.objToArray(data.phrases));
+        }
+        this.util.setCountDown();
       });
   }
 
@@ -115,16 +151,16 @@ export class HomePage {
         
         let searchRegx = new RegExp(this.searchQuery, "i");
         let resultCounter = 0;
-        for(let i = 0; i < this.threads.length; i++){
+        for(let i = 0; i < this.vars.threads.length; i++){
 
-            if((this.threads[i].users[0].full_name.search(searchRegx) >= 0) || 
-            (this.threads[i].users[0].username.search(searchRegx) >= 0)){
+            if((this.vars.threads[i].users[0].full_name.search(searchRegx) >= 0) || 
+            (this.vars.threads[i].users[0].username.search(searchRegx) >= 0)){
 
-                this.threads[i].visibleBasedOnSearch = true;
+                this.vars.threads[i].visibleBasedOnSearch = true;
                 resultCounter++;
             }else{
 
-                this.threads[i].visibleBasedOnSearch = false;
+                this.vars.threads[i].visibleBasedOnSearch = false;
             }
 
         }
@@ -132,9 +168,9 @@ export class HomePage {
         //this.feedListLength = resultCounter;
     }else{
 
-        for(let i = 0; i < this.threads.length; i++){
+        for(let i = 0; i < this.vars.threads.length; i++){
             
-            this.threads[i].visibleBasedOnSearch = true;
+            this.vars.threads[i].visibleBasedOnSearch = true;
             
         }
         //this.feedListLength = this.feedList.length;
@@ -144,6 +180,9 @@ export class HomePage {
 
   goToChats(index: number, thread: any){
 
+    this.vars.tempThreadKey = thread.thread_id;
+    this.vars.tempThread = thread;
+    console.log(thread);
     this.navCtrl.push(ChatPage);
   }
 

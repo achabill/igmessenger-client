@@ -46,17 +46,17 @@
     color: #ff1d49 !important;
 }
 
-.labelbad{
+.labelBad{
 
     color: #ff1d49;
 }
 
-.labelmedium{
+.labelMedium{
     
     color: #fbbd08;
 }
 
-.labelgood{
+.labelGood{
         
     color: #61ef82;
 }
@@ -96,17 +96,17 @@
     border-radius: 10px;
 }
 
-.userImg.lb{
+.userImg.labelBad{
     background-color: #ff1d49;
     border: 5px solid #ff1d49;
 }
 
-.userImg.lm{
+.userImg.labelMedium{
     background-color: #fbbd08;
     border: 5px solid #fbbd08;
 }
 
-.userImg.lg{
+.userImg.labelGood{
     background-color: #61ef82;
     border: 5px solid #61ef82;
 }
@@ -118,6 +118,11 @@
 .briefItem{
 
     color: #2185d0 !important;
+}
+
+.briefItemExp{
+
+    color: #999 !important;
 }
 
 .timeItem{
@@ -218,4 +223,39 @@
 
     font-size: 12px;
     color: #777;
+}
+
+.profileImg{
+
+    border-radius: 50%;
+}
+
+.bioDiv{
+
+    padding: 0 10px;
+}
+
+.bioDiv p{
+
+    margin-top: 0;
+}
+
+.labelGrid .labSel{
+
+    background-color: rgba(0,0,0,.1);
+}
+
+.labelGrid button{
+
+   color: white !important;
+}
+
+page-profile .toolbar-md {
+    padding: 0 !important;
+    color: white !important;
+}
+
+page-profile .title .toolbar-title{
+
+    color: white !important;
 }

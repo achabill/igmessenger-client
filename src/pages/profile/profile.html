@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-navbar class="">
+  <ion-toolbar class="profileNav" color="{{labelColor}}">
+
+    <ion-title>@mrbean</ion-title>
+
+  </ion-toolbar>
+  </ion-navbar>
+  
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <h5>Mr Bean</h5>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-4>
+                <img src="/assets/imgs/img1.jpg" class="profileImg">
+            </ion-col>
+            <ion-col col-4>
+                <h6>Followers</h6>
+                <h3>7,536</h3>
+            </ion-col>
+            <ion-col col-4>
+                    <h6>Followings</h6>
+                    <h3>7,536</h3>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div class="bioDiv">
+        <p>
+            <b>Bio</b><br/>Set the width of one column and the others will automatically resize around it. This can be done using our predefined grid attributes.
+        </p>
+    </div>
+    <h5 class="centerText">Change Class</h5>
+    <ion-grid class="labelGrid">
+        <ion-row>
+            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelGood'}">
+                <button ion-button color="labelGood" (click)="setLabel('labelGood')">
+                    <ion-icon name="radio-button-on"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelMedium'}">
+                <button ion-button color="labelMedium" (click)="setLabel('labelMedium')">
+                    <ion-icon name="radio-button-on"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelBad'}">
+                <button ion-button color="labelBad" (click)="setLabel('labelBad')">
+                    <ion-icon name="radio-button-on"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col class="centerText">
+                    <button ion-button color="LabelClear" (click)="setLabel('LabelClear')">
+                        <ion-icon name="radio-button-on"></ion-icon>
+                    </button>
+                </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

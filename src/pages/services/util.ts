@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
+import { VarsService } from './../services/vars';
 
 @Injectable()
 export class UtilService {
-  constructor() {
+  constructor(public vars: VarsService) {
     
   }
 
@@ -30,6 +31,20 @@ export class UtilService {
         tempArray.push(temp);
     }
     return tempArray;
+  }
+
+  setCountDown(): void {
+   
+    setInterval(()=>{ 
+
+      for(let i = 0; i < this.vars.threads.length; i++){
+
+        if(this.vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0){
+
+          this.vars.threads[i].threadTimer -= 1;
+        }
+      }
+    }, 60000);
   }
 
 }

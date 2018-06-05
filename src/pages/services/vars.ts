@@ -6,9 +6,17 @@ export class VarsService {
   private isUserLoggedin: boolean;
   private userLoginInfo: any;
   private userIgInfo: any;
+  private userPhrases: any;
+  
+  public tempThreadKey: string = null;
+  public tempThread: any;
+  public labeledThreads: any[];
+  public userTimers: any[];
+  public threads: any[] = [];
   
   constructor() {
     
+    this.userPhrases = [];
   }
 
   retrieveData() {
@@ -46,6 +54,17 @@ export class VarsService {
   getUserIgInfo(): any {
    
     return this.userIgInfo;
+  }
+
+  setUserPhrases(phrase: any): void {
+   
+    this.setIsUserLoggedin(true);
+    this.userPhrases = phrase;
+  }
+
+  getUserPhrases(): any {
+   
+    return this.userPhrases;
   }
 
 }

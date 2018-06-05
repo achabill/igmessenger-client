@@ -13,13 +13,13 @@
               <ion-icon name="refresh"></ion-icon>
             </button>
         <button ion-button icon-only>
-          <ion-icon name="radio-button-on" class="labelgood"></ion-icon>
+          <ion-icon name="radio-button-on" class="labelGood"></ion-icon>
         </button>
         <button ion-button icon-only>
-            <ion-icon name="radio-button-on" class="labelmedium"></ion-icon>
+            <ion-icon name="radio-button-on" class="labelMedium"></ion-icon>
           </button>
           <button ion-button icon-only>
-              <ion-icon name="radio-button-on" class="labelbad"></ion-icon>
+              <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
           </button>
           <button ion-button icon-only>
               <img [src]="profilePicture" class="headerDp">
@@ -51,19 +51,24 @@
         </div>
       </button> -->
 
-      <ng-container *ngFor="let thread of threads; let i = index">
+      <ng-container *ngFor="let thread of vars.threads; let i = index">
       <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)">
-          <ion-avatar item-start class="userImg ld">
+          <ion-avatar item-start class="userImg {{thread.labelColor}}">
             <img src="{{thread.users[0].profile_pic_url}}">
           </ion-avatar>
           <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
           <h3 class="sampleItem">{{parseFeedBrief(thread.items[0])}}</h3>
           <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
-          <!-- <div item-end class="centerText briefItem">
+           <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0">
             <ion-icon name="stopwatch"></ion-icon>
             <br/>
-            <span>00:50</span>
-          </div> -->
+            <span>-{{thread.threadTimer}}min</span>
+          </div>
+
+          <div item-end class="centerText briefItemExp" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer < 1">
+              <ion-icon name="stopwatch"></ion-icon>
+            </div>
+
         </button>
         </ng-container>
 
