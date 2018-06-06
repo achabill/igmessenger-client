@@ -1,43 +1,40 @@
 <ion-header>
-    <ion-toolbar color="primary">
-      <ion-buttons start>
-        <button ion-button icon-only>
-          <ion-icon name="stopwatch"></ion-icon>
-        </button>
-      </ion-buttons>
-  
-      <ion-title>TORS</ion-title>
-  
-      <ion-buttons end>
-          <button ion-button icon-only>
-              <ion-icon name="refresh"></ion-icon>
-            </button>
-        <button ion-button icon-only>
-          <ion-icon name="radio-button-on" class="labelGood"></ion-icon>
-        </button>
-        <button ion-button icon-only>
-            <ion-icon name="radio-button-on" class="labelMedium"></ion-icon>
-          </button>
-          <button ion-button icon-only>
-              <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
-          </button>
-          <button ion-button icon-only>
-              <img [src]="profilePicture" class="headerDp">
-          </button> 
-      </ion-buttons>
-    </ion-toolbar>
-    <ion-toolbar color="primary">
-        <ion-searchbar 
-        [(ngModel)]="searchQuery"
-        (ionInput)="searchFeed($event)"
-        (ionCancel)="searchFeed($event)" placeholder="Search Chats..."></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only>
+        <ion-icon name="stopwatch"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>TORS</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="radio-button-on" class="labelGood"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="radio-button-on" class="labelMedium"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <img [src]="profilePicture" class="headerDp">
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchFeed($event)" (ionCancel)="searchFeed($event)" placeholder="Search Chats..."></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
   <ion-list>
 
-      <!-- <button ion-item>
+    <!-- <button ion-item>
         <ion-avatar item-start class="userImg lb">
           <img src="/assets/imgs/img1.jpg">
         </ion-avatar>
@@ -51,28 +48,28 @@
         </div>
       </button> -->
 
-      <ng-container *ngFor="let thread of vars.threads; let i = index">
+    <ng-container *ngFor="let thread of vars.threads; let i = index">
       <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)">
-          <ion-avatar item-start class="userImg {{thread.labelColor}}">
-            <img src="{{thread.users[0].profile_pic_url}}">
-          </ion-avatar>
-          <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
-          <h3 class="sampleItem">{{parseFeedBrief(thread.items[0])}}</h3>
-          <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
-           <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0">
-            <ion-icon name="stopwatch"></ion-icon>
-            <br/>
-            <span>-{{thread.threadTimer}}min</span>
-          </div>
+        <ion-avatar item-start class="userImg {{thread.labelColor}}">
+          <img src="{{thread.users[0].profile_pic_url}}">
+        </ion-avatar>
+        <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
+        <h3 class="sampleItem">{{parseFeedBrief(thread.items[0])}}</h3>
+        <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
+        <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0">
+          <ion-icon name="stopwatch"></ion-icon>
+          <br/>
+          <span>{{formatTimer(thread.threadTimer)}}</span>
+        </div>
 
-          <div item-end class="centerText briefItemExp" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer < 1">
-              <ion-icon name="stopwatch"></ion-icon>
-            </div>
+        <div item-end class="centerText briefItemExp" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer < 1">
+          <ion-icon name="stopwatch"></ion-icon>
+        </div>
 
-        </button>
-        </ng-container>
+      </button>
+    </ng-container>
 
-      <!-- <button ion-item>
+    <!-- <button ion-item>
           <ion-avatar item-start class="userImg lg">
             <img src="/assets/imgs/img2.jpg">
           </ion-avatar>
