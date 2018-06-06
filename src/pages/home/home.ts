@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 
 import { VarsService } from './../services/vars';
 import { UtilService } from './../services/util';
+import { Http } from '@angular/http';
 
 import { ChatPage } from './../chat/chat';
 
@@ -21,6 +22,7 @@ export class HomePage {
     public igDbObservable: Observable<{}>;
     public subscriptionHandle: any;
     public loaderHandle: any;
+    public loading;
     public profilePicture: string = "/assets/imgs/default_dp.png";
     public searchQuery: string = "";
     public activeSortLabel: string = "";
@@ -29,22 +31,37 @@ export class HomePage {
         public navCtrl: NavController,
         public vars: VarsService,
         public afDatabase: AngularFireDatabase,
-        public util: UtilService
+        public http: Http,
+        public util: UtilService,
+        public loadingCtrl: LoadingController
     ) {
 
-        console.log(vars.retrieveData());
+        //console.log(vars.retrieveData());
         if (!vars.getIsUserLoggedin()) {
 
             this.navCtrl.popToRoot();
         }
 
         this.userIgInfoURI = "/igInfo/" + this.vars.getUserLoginInfo().id;
-        console.log(this.userIgInfoURI);
+        //console.log(this.userIgInfoURI);
         this.getThreads();
     }
 
+    presentLoadingDefault() {
+        this.loading = this.loadingCtrl.create({
+            content: 'Loading threads...'
+        });
+
+        this.loading.present();
+    }
+
     ionViewDidLoad() {
-        console.log('ionViewDidLoad homePage');
+        //console.log('ionViewDidLoad homePage');
+    }
+
+    loadMore() {
+        console.log('load more');
+        this.http.get(this.vars.getLoadMoreEndpoint());
     }
 
     parseDateObj(tStamp: any) {
@@ -119,10 +136,10 @@ export class HomePage {
             let threadLabel = this.checkIfThreadIsLabeled(threads[i].thread_id);
             let threadTimer = this.checkIfThreadIsTimed(threads[i].thread_id);
             let autoTimerVal: boolean;
-            if(threadTimer == null || threadTimer < 1){
-                
+            if (threadTimer == null || threadTimer < 1) {
+
                 autoTimerVal = true;
-            }else{
+            } else {
 
                 autoTimerVal = false;
             }
@@ -135,27 +152,28 @@ export class HomePage {
 
         this.igDbObservable = this.afDatabase.object(this.userIgInfoURI).valueChanges();
         this.subscriptionHandle = this.igDbObservable.subscribe((data: any) => {
-
-            console.log(data);
+            this.presentLoadingDefault();
+            //console.log(data);
             //this.subscriptionHandle.unsubscribe();
             this.vars.setUserIgInfo(data.user);
             this.profilePicture = data.user.profile_pic_url;
             this.vars.labeledThreads = this.util.objToArray(data.labels ? data.labels : []);
             this.vars.userTimers = this.util.objToArray(data.timers ? data.timers : []);
             this.vars.threads = this.parseThreads(data.threads);
-            console.log(this.vars.threads);
+            //console.log(this.vars.threads);
             if (data.phrases) {
 
-                console.log(this.util.objToArray(data.phrases));
+                //console.log(this.util.objToArray(data.phrases));
                 this.vars.setUserPhrases(this.util.objToArray(data.phrases));
             }
             this.util.setCountDown();
+            this.loading.dismiss();
         });
     }
 
     searchFeed(): void {
 
-        console.log(this.searchQuery);
+        //console.log(this.searchQuery);
         if (this.searchQuery) {
 
             let searchRegx = new RegExp(this.searchQuery, "i");
@@ -189,39 +207,39 @@ export class HomePage {
 
     sortLable(labelColor: string): void {
 
-            this.activeSortLabel = labelColor;
-            let resultCounter = 0;
-            for (let i = 0; i < this.vars.threads.length; i++) {
+        this.activeSortLabel = labelColor;
+        let resultCounter = 0;
+        for (let i = 0; i < this.vars.threads.length; i++) {
 
-                if (this.vars.threads[i].labelColor == labelColor) {
+            if (this.vars.threads[i].labelColor == labelColor) {
 
-                    this.vars.threads[i].visibleBasedOnSearch = true;
-                    resultCounter++;
-                } else {
+                this.vars.threads[i].visibleBasedOnSearch = true;
+                resultCounter++;
+            } else {
 
-                    this.vars.threads[i].visibleBasedOnSearch = false;
-                }
-
+                this.vars.threads[i].visibleBasedOnSearch = false;
             }
+
+        }
 
     }
 
     sortTimer(): void {
 
-        this.vars.threads.sort((a: any, b: any) :number =>{
+        this.vars.threads.sort((a: any, b: any): number => {
 
-            if(a.threadTimer == null && b.threadTimer == null){
+            if (a.threadTimer == null && b.threadTimer == null) {
 
                 return 0;
-            }else{
+            } else {
 
-                if(a.threadTimer == null){
+                if (a.threadTimer == null) {
 
                     return 1;
-                }else if(b.threadTimer == null){
+                } else if (b.threadTimer == null) {
 
                     return -1;
-                }else{
+                } else {
 
                     return a.threadTimer - b.threadTimer;
                 }
@@ -230,12 +248,12 @@ export class HomePage {
     }
 
     refreshThreads(): void {
-        
+
         for (let i = 0; i < this.vars.threads.length; i++) {
 
             this.vars.threads[i].visibleBasedOnSearch = true;
         }
-        this.vars.threads.sort((a: any, b: any) :number =>{
+        this.vars.threads.sort((a: any, b: any): number => {
 
             return b.items[0].timestamp - a.items[0].timestamp;
         });
@@ -246,7 +264,7 @@ export class HomePage {
 
         this.vars.tempThreadKey = thread.thread_id;
         this.vars.tempThread = thread;
-        console.log(thread);
+        //console.log(thread);
         this.navCtrl.push(ChatPage);
     }
 

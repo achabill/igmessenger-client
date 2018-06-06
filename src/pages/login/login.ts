@@ -40,11 +40,11 @@ export class LoginPage {
   ) {
 
     this.resetLoginData();
-    console.log(CryptoJS.MD5("BENZ45xxx").toString());
+    //console.log(CryptoJS.MD5("BENZ45xxx").toString());
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+    //console.log('ionViewDidLoad LoginPage');
   }
 
   presentLoadingDefault() {
@@ -122,7 +122,7 @@ export class LoginPage {
         if (this.getUserFirebaseLoginStatus(data)) {
 
           this.navCtrl.push(HomePage);
-          console.log(this.util.objToArray(data), CryptoJS.MD5("hello how are you doing"));
+          //console.log(this.util.objToArray(data), CryptoJS.MD5("hello how are you doing"));
           this.loading.dismiss();
         } else {
           this.loading.dismiss();

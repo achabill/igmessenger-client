@@ -26,7 +26,7 @@ export class ProfilePage {
   private userLabelURI: string;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public vars: VarsService,
     public afDatabase: AngularFireDatabase,
     public util: UtilService,
@@ -34,28 +34,28 @@ export class ProfilePage {
     public http: Http
   ) {
 
-    this.userLabelURI = "/igInfo/"+this.vars.getUserLoginInfo().id+"/labels/"+this.vars.tempThreadKey;
-    if(this.vars.tempThread.loadedData){
+    this.userLabelURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/labels/" + this.vars.tempThreadKey;
+    if (this.vars.tempThread.loadedData) {
 
       this.currentUserData = this.vars.tempThread.loadedData;
-    }else{
+    } else {
 
       this.getuserInfo(this.vars.tempThread.users[0].pk);
     }
   }
 
   ionViewDidLoad() {
-    console.log(this.userLabelURI);
+    //console.log(this.userLabelURI);
   }
 
   setLabel(label: string): void {
-    
-    let res = this.afDatabase.object(this.userLabelURI).set({label: label});
-    if(res){
+
+    let res = this.afDatabase.object(this.userLabelURI).set({ label: label });
+    if (res) {
 
       this.vars.tempThread.labelColor = label;
       this.presentToast("Label was successfully set");
-    }else{
+    } else {
 
       this.presentToast("Label was not set.");
     }
@@ -67,23 +67,23 @@ export class ProfilePage {
       duration: 3000,
       position: 'top'
     });
-  
+
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
-  
+
     toast.present();
   }
 
-  getuserInfo(pk: string){
+  getuserInfo(pk: string) {
 
     this.http.get(
-      this.vars.getUserEndPoint()+"?userId="+pk
-      ).timeout(30000).subscribe((data:any) => {
+      this.vars.getUserEndPoint() + "?userId=" + pk
+    ).timeout(30000).subscribe((data: any) => {
 
-          console.log(JSON.parse(data._body));
-          this.currentUserData = JSON.parse(data._body);
-          this.vars.tempThread.loadedData = JSON.parse(data._body);
-      });
+      //console.log(JSON.parse(data._body));
+      this.currentUserData = JSON.parse(data._body);
+      this.vars.tempThread.loadedData = JSON.parse(data._body);
+    });
   }
 }

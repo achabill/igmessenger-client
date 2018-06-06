@@ -37,17 +37,16 @@ export class ChatPage {
     this.userPhraseURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/phrases";
     this.userTimerURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/timers/" + this.vars.tempThreadKey;
     this.presetPhrases = this.vars.getUserPhrases();
-    console.log(this.userTimerURI);
     //this.setPhrase();
   }
 
   ionViewDidLoad() {
-    console.log("Page Loaded");
+
   }
 
   ionViewWillLeave() {
-    
-    if(this.vars.tempThread.autoTimer) {
+
+    if (this.vars.tempThread.autoTimer) {
 
       this.setTimer(this.vars.autoTimerDefaultValue);
     }
@@ -91,7 +90,7 @@ export class ChatPage {
       icon: "add-circle",
       role: 'cancel',
       handler: () => {
-        console.log('Archive clicked');
+
         this.addPhrase();
       }
     }
@@ -103,7 +102,7 @@ export class ChatPage {
           text: this.presetPhrases[i].phrase,
           icon: "text",
           handler: () => {
-            console.log('Archive clicked');
+
           }
         }
         tempArray.push(tempObj);
@@ -115,7 +114,7 @@ export class ChatPage {
         icon: "alert",
         role: 'cancel',
         handler: () => {
-          console.log('Archive clicked');
+
         }
       }
       tempArray.push(tempObj);
@@ -140,7 +139,7 @@ export class ChatPage {
           text: '20 Minutes',
           icon: "time",
           handler: () => {
-            console.log('20mins Clicked');
+
             this.setTimer(20 * 60 * 1000);
           }
         },
@@ -148,7 +147,7 @@ export class ChatPage {
           text: '1 Hour',
           icon: "time",
           handler: () => {
-            console.log('1hr Clicked');
+
             this.setTimer(60 * 60 * 1000);
           }
         },
@@ -156,7 +155,7 @@ export class ChatPage {
           text: '4 Hours',
           icon: "time",
           handler: () => {
-            console.log('4hrs clicked');
+
             this.setTimer(4 * 60 * 60 * 1000);
           }
         },
@@ -164,7 +163,7 @@ export class ChatPage {
           text: '12 Hours',
           icon: "time",
           handler: () => {
-            console.log('12hrs clicked');
+
             this.setTimer(12 * 60 * 60 * 1000);
           }
         },
@@ -172,7 +171,7 @@ export class ChatPage {
           text: '24 Hours',
           icon: "time",
           handler: () => {
-            console.log('24hrs clicked');
+
             this.setTimer(24 * 60 * 60 * 1000);
           }
         },
@@ -180,7 +179,7 @@ export class ChatPage {
           text: '3 Days',
           icon: "time",
           handler: () => {
-            console.log('3days clicked');
+            //console.log('3days clicked');
             this.setTimer(3 * 24 * 60 * 60 * 1000);
           }
         },
@@ -188,7 +187,7 @@ export class ChatPage {
           text: '7 Days',
           icon: "time",
           handler: () => {
-            console.log('7days clicked');
+            //console.log('7days clicked');
             this.setTimer(7 * 24 * 60 * 60 * 1000);
           }
         },
@@ -196,7 +195,7 @@ export class ChatPage {
           text: '1 Month',
           icon: "time",
           handler: () => {
-            console.log('1month clicked');
+            //console.log('1month clicked');
             this.setTimer(30 * 24 * 60 * 60 * 1000);
           }
         },
@@ -204,7 +203,7 @@ export class ChatPage {
           text: 'Clear Timer',
           icon: "refresh-circle",
           handler: () => {
-            console.log('Clear Timer clicked');
+            //console.log('Clear Timer clicked');
             this.setTimer(null);
           }
         },
@@ -213,7 +212,7 @@ export class ChatPage {
           role: 'cancel',
           icon: 'close-circle',
           handler: () => {
-            console.log('Cancel clicked');
+            //console.log('Cancel clicked');
           }
         }
       ]
@@ -237,13 +236,13 @@ export class ChatPage {
           text: 'Cancel',
           role: 'cancel',
           handler: data => {
-            console.log('Cancel clicked');
+            //console.log('Cancel clicked');
           }
         },
         {
           text: 'Add',
           handler: data => {
-            console.log(data);
+            //console.log(data);
             if (data.phrase && data.phrase.length > 5) {
 
               if (this.setPhrase(data.phrase)) {
@@ -273,7 +272,7 @@ export class ChatPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();

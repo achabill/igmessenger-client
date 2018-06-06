@@ -19,7 +19,7 @@
         <ion-icon name="radio-button-on" class="labelMedium"></ion-icon>
       </button>
       <button ion-button icon-only [ngClass]="{'activeSortLabel': activeSortLabel == 'labelBad'}" (click)="sortLable('labelBad')">
-         <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
+        <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
       </button>
       <button ion-button icon-only>
         <img [src]="profilePicture" class="headerDp">
@@ -54,7 +54,7 @@
           <img src="{{thread.users[0].profile_pic_url}}">
         </ion-avatar>
         <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
-        <h3 class="sampleItem" [ngClass]="{'unreadThread': !thread.last_seen_at}" >{{parseFeedBrief(thread.items[0])}}</h3>
+        <h3 class="sampleItem" [ngClass]="{'unreadThread': !thread.last_seen_at}">{{parseFeedBrief(thread.items[0])}}</h3>
         <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
         <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && vars.threads[i].threadTimer > 0">
           <ion-icon name="stopwatch"></ion-icon>
@@ -68,6 +68,7 @@
 
       </button>
     </ng-container>
+    <button ion-button full (click)="loadMore()">Load more threads</button>
 
     <!-- <button ion-item>
           <ion-avatar item-start class="userImg lg">
