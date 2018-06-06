@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, ToastController  } from 'ionic-angular';
+import { NavController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 
 import { VarsService } from './../services/vars';
 import { UtilService } from './../services/util';
@@ -9,6 +9,7 @@ import { ProfilePage } from './../profile/profile';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+var moment = require('moment');
 
 @Component({
   selector: 'page-chat',
@@ -25,7 +26,7 @@ export class ChatPage {
   public presetPhrases: any;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public vars: VarsService,
     public afDatabase: AngularFireDatabase,
     public util: UtilService,
@@ -34,8 +35,8 @@ export class ChatPage {
     public toastCtrl: ToastController
   ) {
 
-    this.userPhraseURI = "/igInfo/"+this.vars.getUserLoginInfo().id+"/phrases";
-    this.userTimerURI = "/igInfo/"+this.vars.getUserLoginInfo().id+"/timers/"+this.vars.tempThreadKey;
+    this.userPhraseURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/phrases";
+    this.userTimerURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/timers/" + this.vars.tempThreadKey;
     this.presetPhrases = this.vars.getUserPhrases();
     console.log(this.userTimerURI);
     //this.setPhrase();
@@ -45,41 +46,72 @@ export class ChatPage {
     console.log("Page Loaded");
   }
 
-  goToProfile(){
+  goToProfile() {
 
     this.navCtrl.push(ProfilePage);
   }
 
+  formatTimer(mins) {
+    var result = moment().subtract('minutes', mins).fromNow();
+    //2 minutes ago
+    //checkout moment.js
+    result = result.split(' ');
+    var value = result[0];
+    var unit = result[1];
+    var shortUnit = '';
+    switch (unit) {
+      case 'seconds':
+        shortUnit = 'secs';
+        break;
+      case 'minutes':
+        shortUnit = 'mins';
+        break;
+      case 'hours':
+        shortUnit = 'hors';
+        break;
+      case 'days':
+        shortUnit = 'days';
+        break;
+      case 'weeks':
+        shortUnit = 'weks';
+        break;
+      case 'months':
+        shortUnit = 'mnts'
+        break;
+    }
+    var time = value + ' ' + shortUnit;
+    return time;
+  }
 
   setPhrase(phrase: string): any {
-    
-    let res = this.afDatabase.list(this.userPhraseURI).push({phrase: phrase});
+
+    let res = this.afDatabase.list(this.userPhraseURI).push({ phrase: phrase });
     return res;
   }
 
   setTimer(duration: any): void {
-    
+
     let res = this.afDatabase.object(this.userTimerURI).set({
       duration: duration,
       timeSet: Date.now()
     });
 
-    if(res){
+    if (res) {
 
       //this.labelColor = label;
       this.presentToast("Timer was successfully set");
-    }else{
+    } else {
 
       this.presentToast("Timer was not set.");
     }
   }
 
-  preparePhraseActionSheetButtons(): any[]{
+  preparePhraseActionSheetButtons(): any[] {
 
     let tempArray: any[] = [];
     this.presetPhrases = this.vars.getUserPhrases();
-    if(this.presetPhrases.length > 0){
-      for(let i = 0; i < this.presetPhrases.length; i++){
+    if (this.presetPhrases.length > 0) {
+      for (let i = 0; i < this.presetPhrases.length; i++) {
 
         let tempObj = {
           text: this.presetPhrases[i].phrase,
@@ -90,7 +122,7 @@ export class ChatPage {
         }
         tempArray.push(tempObj);
       }
-    }else{
+    } else {
 
       let tempObj = {
         text: "Empty Phrase List.",
@@ -110,7 +142,7 @@ export class ChatPage {
       title: 'Select Phrase',
       buttons: this.preparePhraseActionSheetButtons()
     });
- 
+
     actionSheet.present();
   }
 
@@ -123,7 +155,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('20mins Clicked');
-            this.setTimer(20*60*1000);
+            this.setTimer(20 * 60 * 1000);
           }
         },
         {
@@ -131,7 +163,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('1hr Clicked');
-            this.setTimer(60*60*1000);
+            this.setTimer(60 * 60 * 1000);
           }
         },
         {
@@ -139,7 +171,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('4hrs clicked');
-            this.setTimer(4*60*60*1000);
+            this.setTimer(4 * 60 * 60 * 1000);
           }
         },
         {
@@ -147,7 +179,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('12hrs clicked');
-            this.setTimer(12*60*60*1000);
+            this.setTimer(12 * 60 * 60 * 1000);
           }
         },
         {
@@ -155,7 +187,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('24hrs clicked');
-            this.setTimer(24*60*60*1000);
+            this.setTimer(24 * 60 * 60 * 1000);
           }
         },
         {
@@ -163,7 +195,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('3days clicked');
-            this.setTimer(3*24*60*60*1000);
+            this.setTimer(3 * 24 * 60 * 60 * 1000);
           }
         },
         {
@@ -171,7 +203,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('7days clicked');
-            this.setTimer(7*24*60*60*1000);
+            this.setTimer(7 * 24 * 60 * 60 * 1000);
           }
         },
         {
@@ -179,7 +211,7 @@ export class ChatPage {
           icon: "timer",
           handler: () => {
             console.log('1month clicked');
-            this.setTimer(30*24*60*60*1000);
+            this.setTimer(30 * 24 * 60 * 60 * 1000);
           }
         },
         {
@@ -200,7 +232,7 @@ export class ChatPage {
         }
       ]
     });
- 
+
     actionSheet.present();
   }
 
@@ -226,17 +258,17 @@ export class ChatPage {
           text: 'Add',
           handler: data => {
             console.log(data);
-            if(data.phrase && data.phrase.length > 5) {
-              
-              if(this.setPhrase(data.phrase)){
+            if (data.phrase && data.phrase.length > 5) {
+
+              if (this.setPhrase(data.phrase)) {
 
                 this.presentToast("Phrase was added successfully");
-              }else{
+              } else {
 
                 this.presentToast("Phrase was not added.");
               }
             } else {
-              
+
               this.presentToast("Phrase is invalid or too short.");
               return false;
             }
@@ -253,11 +285,11 @@ export class ChatPage {
       duration: 3000,
       position: 'top'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
-  
+
     toast.present();
   }
 
