@@ -15,8 +15,11 @@
         </ion-toolbar>
     </ion-navbar>
     <ion-toolbar color="{{vars.tempThread.labelColor}}" class="centerText">
-        <button ion-button icon-only start color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="vars.toggleAutoTimer()">
-            <ion-icon name="stopwatch" class="colorWhite"></ion-icon>
+        <button ion-button icon-only start *ngIf="vars.tempThread.autoTimer" color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="vars.toggleAutoTimer()">
+            <ion-icon name="radio-button-on" class="colorWhite"></ion-icon>
+        </button>
+        <button ion-button icon-only start *ngIf="!vars.tempThread.autoTimer" color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="vars.toggleAutoTimer()">
+                <ion-icon name="radio-button-off" class="colorWhite"></ion-icon>
         </button>
         <button ion-button icon-only color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="presentPhraseActionSheet()">
             <ion-icon name="chatbubbles" class="colorWhite"></ion-icon>
