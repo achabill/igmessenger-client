@@ -23,6 +23,7 @@ export class HomePage {
     public loaderHandle: any;
     public profilePicture: string = "/assets/imgs/default_dp.png";
     public searchQuery: string = "";
+    public activeSortLabel: string = "";
 
     constructor(
         public navCtrl: NavController,
@@ -188,6 +189,7 @@ export class HomePage {
 
     sortLable(labelColor: string): void {
 
+            this.activeSortLabel = labelColor;
             let resultCounter = 0;
             for (let i = 0; i < this.vars.threads.length; i++) {
 
@@ -237,6 +239,7 @@ export class HomePage {
 
             return b.items[0].timestamp - a.items[0].timestamp;
         });
+        this.activeSortLabel = " ";
     }
 
     goToChats(index: number, thread: any) {
