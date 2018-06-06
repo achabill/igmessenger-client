@@ -42,9 +42,6 @@ export class UtilService {
         if(this.vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0){
 
           this.vars.threads[i].threadTimer -= 1;
-        }else{
-
-          this.vars.threads[i].autoTimer = true;
         }
       }
     }, 60000);
