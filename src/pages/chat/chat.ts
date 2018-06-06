@@ -85,16 +85,6 @@ export class ChatPage {
 
     let tempArray: any[] = [];
     this.presetPhrases = this.vars.getUserPhrases();
-    let tempObj = {
-      text: "Add Phrase.",
-      icon: "add-circle",
-      role: 'cancel',
-      handler: () => {
-
-        this.addPhrase();
-      }
-    }
-    tempArray.push(tempObj);
     if (this.presetPhrases.length > 0) {
       for (let i = 0; i < this.presetPhrases.length; i++) {
 
@@ -107,18 +97,16 @@ export class ChatPage {
         }
         tempArray.push(tempObj);
       }
-    } else {
-
-      let tempObj = {
-        text: "Empty Phrase List.",
-        icon: "alert",
-        role: 'cancel',
-        handler: () => {
-
-        }
-      }
-      tempArray.push(tempObj);
     }
+    let addPhrase = {
+      text: "Add Phrase.",
+      icon: "add-circle",
+      role: 'cancel',
+      handler: () => {
+        this.addPhrase();
+      }
+    }
+    tempArray.push(addPhrase);
     return tempArray;
   }
 

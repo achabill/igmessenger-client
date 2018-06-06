@@ -14,7 +14,8 @@ export class VarsService {
   public userTimers: any[];
   public threads: any[] = [];
   public autoTimerDefaultValue: number = 20 * 60 * 1000;
-  public serverHostAndPort: string = "http://localhost:1035";
+  public serverHostAndPort: string = "http://45.77.225.86:1035";
+  //public serverHostAndPort: string = "http://127.0.0.1:1035";
   public serverUserEndPoint: string = "/user";
   public serverLoadMoreEndpoint: string = "/loadmore";
 
@@ -86,7 +87,7 @@ export class VarsService {
 
     return this.serverHostAndPort + this.serverUserEndPoint;
   }
-  public getLoadMoreEndpoint(): string {
+  getLoadMoreEndpoint(): string {
     return this.serverHostAndPort + this.serverLoadMoreEndpoint;
   }
 }

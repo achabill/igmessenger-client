@@ -61,7 +61,9 @@ export class HomePage {
 
     loadMore() {
         console.log('load more');
-        this.http.get(this.vars.getLoadMoreEndpoint());
+        this.http.get(this.vars.getLoadMoreEndpoint()).subscribe(res => {
+            console.log(res);
+        })
     }
 
     parseDateObj(tStamp: any) {
@@ -151,8 +153,9 @@ export class HomePage {
     getThreads() {
 
         this.igDbObservable = this.afDatabase.object(this.userIgInfoURI).valueChanges();
+        this.presentLoadingDefault();
         this.subscriptionHandle = this.igDbObservable.subscribe((data: any) => {
-            this.presentLoadingDefault();
+
             //console.log(data);
             //this.subscriptionHandle.unsubscribe();
             this.vars.setUserIgInfo(data.user);
