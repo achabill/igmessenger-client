@@ -9,7 +9,6 @@ import { ChatPage } from './../chat/chat';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
-var moment = require('moment');
 
 @Component({
     selector: 'page-home',
@@ -45,38 +44,6 @@ export class HomePage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad homePage');
-    }
-
-    formatTimer(mins) {
-        var result = moment().subtract('minutes', mins).fromNow();
-        //2 minutes ago
-        //checkout moment.js
-        result = result.split(' ');
-        var value = result[0];
-        var unit = result[1];
-        var shortUnit = '';
-        switch (unit) {
-            case 'seconds':
-                shortUnit = 'secs';
-                break;
-            case 'minutes':
-                shortUnit = 'mins';
-                break;
-            case 'hours':
-                shortUnit = 'hors';
-                break;
-            case 'days':
-                shortUnit = 'days';
-                break;
-            case 'weeks':
-                shortUnit = 'weks';
-                break;
-            case 'months':
-                shortUnit = 'mnts'
-                break;
-        }
-        var time = value + ' ' + shortUnit;
-        return time;
     }
 
     parseDateObj(tStamp: any) {
@@ -150,7 +117,15 @@ export class HomePage {
 
             let threadLabel = this.checkIfThreadIsLabeled(threads[i].thread_id);
             let threadTimer = this.checkIfThreadIsTimed(threads[i].thread_id);
-            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer }));
+            let autoTimerVal: boolean;
+            if(threadTimer == null || threadTimer < 1){
+                
+                autoTimerVal = true;
+            }else{
+
+                autoTimerVal = false;
+            }
+            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer, autoTimer: autoTimerVal, loadedData: false }));
         }
         return tempArray;
     }
@@ -209,6 +184,59 @@ export class HomePage {
             //this.feedListLength = this.feedList.length;
         }
 
+    }
+
+    sortLable(labelColor: string): void {
+
+            let resultCounter = 0;
+            for (let i = 0; i < this.vars.threads.length; i++) {
+
+                if (this.vars.threads[i].labelColor == labelColor) {
+
+                    this.vars.threads[i].visibleBasedOnSearch = true;
+                    resultCounter++;
+                } else {
+
+                    this.vars.threads[i].visibleBasedOnSearch = false;
+                }
+
+            }
+
+    }
+
+    sortTimer(): void {
+
+        this.vars.threads.sort((a: any, b: any) :number =>{
+
+            if(a.threadTimer == null && b.threadTimer == null){
+
+                return 0;
+            }else{
+
+                if(a.threadTimer == null){
+
+                    return 1;
+                }else if(b.threadTimer == null){
+
+                    return -1;
+                }else{
+
+                    return a.threadTimer - b.threadTimer;
+                }
+            }
+        });
+    }
+
+    refreshThreads(): void {
+        
+        for (let i = 0; i < this.vars.threads.length; i++) {
+
+            this.vars.threads[i].visibleBasedOnSearch = true;
+        }
+        this.vars.threads.sort((a: any, b: any) :number =>{
+
+            return b.items[0].timestamp - a.items[0].timestamp;
+        });
     }
 
     goToChats(index: number, thread: any) {

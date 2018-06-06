@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons start>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="sortTimer()">
         <ion-icon name="stopwatch"></ion-icon>
       </button>
     </ion-buttons>
@@ -9,16 +9,16 @@
     <ion-title>TORS</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="refreshThreads()">
         <ion-icon name="refresh"></ion-icon>
       </button>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="sortLable('labelGood')">
         <ion-icon name="radio-button-on" class="labelGood"></ion-icon>
       </button>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="sortLable('labelMedium')">
         <ion-icon name="radio-button-on" class="labelMedium"></ion-icon>
       </button>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="sortLable('labelBad')">
         <ion-icon name="radio-button-on" class="labelBad"></ion-icon>
       </button>
       <button ion-button icon-only>
@@ -56,13 +56,13 @@
         <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
         <h3 class="sampleItem">{{parseFeedBrief(thread.items[0])}}</h3>
         <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
-        <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0">
+        <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && vars.threads[i].threadTimer > 0">
           <ion-icon name="stopwatch"></ion-icon>
           <br/>
-          <span>{{formatTimer(thread.threadTimer)}}</span>
+          <span>-{{util.formatTimer(thread.threadTimer)}}</span>
         </div>
 
-        <div item-end class="centerText briefItemExp" *ngIf="vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer < 1">
+        <div item-end class="centerText briefItemExp" *ngIf="vars.threads[i].threadTimer != null && vars.threads[i].threadTimer < 1">
           <ion-icon name="stopwatch"></ion-icon>
         </div>
 

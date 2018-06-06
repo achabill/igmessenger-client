@@ -13,6 +13,9 @@ export class VarsService {
   public labeledThreads: any[];
   public userTimers: any[];
   public threads: any[] = [];
+  public autoTimerDefaultValue: number = 20 * 60 * 1000;
+  public serverHostAndPort: string = "http://localhost:1035";
+  public serverUserEndPoint: string = "/user";
   
   constructor() {
     
@@ -67,4 +70,19 @@ export class VarsService {
     return this.userPhrases;
   }
 
+  toggleAutoTimer(val: any): void{
+
+    if(val != null){
+
+      this.tempThread.autoTimer = val;
+    }else{
+
+      this.tempThread.autoTimer = !this.tempThread.autoTimer;
+    }
+  }
+
+  getUserEndPoint(): string {
+   
+    return this.serverHostAndPort+this.serverUserEndPoint;
+  }
 }

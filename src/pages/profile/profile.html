@@ -1,8 +1,15 @@
 <ion-header>
-    <ion-navbar class="">
-  <ion-toolbar class="profileNav" color="{{labelColor}}">
+    <ion-navbar class="chatBoxNav" color="{{vars.tempThread.labelColor}}">
+  <ion-toolbar class="profileNav" color="{{vars.tempThread.labelColor}}">
 
-    <ion-title>@mrbean</ion-title>
+    <ion-title>@{{vars.tempThread.users[0].username}}</ion-title>
+
+    <ion-buttons end>
+        <button ion-button icon-only *ngIf="vars.tempThread.threadTimer != null && vars.tempThread.threadTimer > 0">
+            <span class="colorWhite">-{{util.formatTimer(vars.tempThread.threadTimer)}}</span>
+            <ion-icon name="timer"></ion-icon>
+        </button>
+    </ion-buttons>
 
   </ion-toolbar>
   </ion-navbar>
@@ -13,42 +20,42 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <h5>Mr Bean</h5>
+                <h5>{{vars.tempThread.users[0].full_name}}</h5>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col col-4>
-                <img src="/assets/imgs/img1.jpg" class="profileImg">
+                <img src="{{vars.tempThread.users[0].profile_pic_url}}" class="profileImg">
             </ion-col>
             <ion-col col-4>
                 <h6>Followers</h6>
-                <h3>7,536</h3>
+                <h3>{{currentUserData.follower_count}}</h3>
             </ion-col>
             <ion-col col-4>
                     <h6>Followings</h6>
-                    <h3>7,536</h3>
+                    <h3>{{currentUserData.following_count}}</h3>
             </ion-col>
         </ion-row>
     </ion-grid>
     <div class="bioDiv">
         <p>
-            <b>Bio</b><br/>Set the width of one column and the others will automatically resize around it. This can be done using our predefined grid attributes.
+            <b>Bio</b><br/>{{currentUserData.biography}}
         </p>
     </div>
     <h5 class="centerText">Change Class</h5>
     <ion-grid class="labelGrid">
         <ion-row>
-            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelGood'}">
+            <ion-col class="centerText" [ngClass]="{'labSel': vars.tempThread.labelColor == 'labelGood'}">
                 <button ion-button color="labelGood" (click)="setLabel('labelGood')">
                     <ion-icon name="radio-button-on"></ion-icon>
                 </button>
             </ion-col>
-            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelMedium'}">
+            <ion-col class="centerText" [ngClass]="{'labSel': vars.tempThread.labelColor == 'labelMedium'}">
                 <button ion-button color="labelMedium" (click)="setLabel('labelMedium')">
                     <ion-icon name="radio-button-on"></ion-icon>
                 </button>
             </ion-col>
-            <ion-col class="centerText" [ngClass]="{'labSel': labelColor == 'labelBad'}">
+            <ion-col class="centerText" [ngClass]="{'labSel': vars.tempThread.labelColor == 'labelBad'}">
                 <button ion-button color="labelBad" (click)="setLabel('labelBad')">
                     <ion-icon name="radio-button-on"></ion-icon>
                 </button>

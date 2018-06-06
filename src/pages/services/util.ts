@@ -42,9 +42,28 @@ export class UtilService {
         if(this.vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0){
 
           this.vars.threads[i].threadTimer -= 1;
+        }else{
+
+          this.vars.threads[i].autoTimer = true;
         }
       }
     }, 60000);
   }
 
+  formatTimer(mins: number) {
+    
+    if(mins > 0 && mins < 60) {
+      
+      return mins+"mins";
+    }else if(mins >= 60 && mins < 1440){
+
+      return (mins/60).toFixed(1)+"hrs";
+    }else if(mins >= 1440 && mins < 43200){
+
+      return (mins/1440).toFixed(1)+"dys";
+    }else{
+
+        return mins+"mins"
+    }
+  }
 }

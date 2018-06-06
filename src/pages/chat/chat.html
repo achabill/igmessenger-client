@@ -1,31 +1,28 @@
 <ion-header>
-    <ion-navbar class="chatBoxNav">
+    <ion-navbar class="chatBoxNav" color="{{vars.tempThread.labelColor}}">
         <ion-toolbar color="primary">
 
-            <ion-title>@mrbean</ion-title>
+            <ion-title class="colorWhite">@{{vars.tempThread.users[0].username}}</ion-title>
 
             <ion-buttons end>
-                <button ion-button icon-only>
-                    <span>{{formatTimer(vars.tempThread.threadTimer)}}</span>
-                </button>
-                <button ion-button icon-only *ngIf="vars.tempThread.labelColor != 'labelClear'">
-                    <ion-icon name="radio-button-on" color="{{vars.tempThread.labelColor}}"></ion-icon>
+                <button ion-button icon-only *ngIf="vars.tempThread.threadTimer != null && vars.tempThread.threadTimer > 0">
+                    <span class="colorWhite">-{{util.formatTimer(vars.tempThread.threadTimer)}}</span>
                 </button>
                 <button ion-button icon-only (click)="goToProfile()">
-                    <img src="/assets/imgs/img1.jpg" class="headerDp">
+                    <img src="{{vars.tempThread.users[0].profile_pic_url}}" class="headerDp">
                 </button>
             </ion-buttons>
         </ion-toolbar>
     </ion-navbar>
-    <ion-toolbar color="primary" class="centerText">
-        <button ion-button icon-only start class="toolBarButton" (click)="addPhrase()">
-            <ion-icon name="add-circle"></ion-icon>
+    <ion-toolbar color="{{vars.tempThread.labelColor}}" class="centerText">
+        <button ion-button icon-only start color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="vars.toggleAutoTimer()">
+            <ion-icon name="stopwatch" class="colorWhite"></ion-icon>
         </button>
-        <button ion-button icon-only class="toolBarButton" (click)="presentPhraseActionSheet()">
-            <ion-icon name="chatbubbles"></ion-icon>
+        <button ion-button icon-only color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="presentPhraseActionSheet()">
+            <ion-icon name="chatbubbles" class="colorWhite"></ion-icon>
         </button>
-        <button ion-button icon-only end class="toolBarButton" (click)="presentTimerActionSheet()">
-            <ion-icon name="stopwatch"></ion-icon>
+        <button ion-button icon-only end color="{{vars.tempThread.labelColor}}" class="toolBarButton" (click)="presentTimerActionSheet()">
+            <ion-icon name="timer" class="colorWhite"></ion-icon>
         </button>
     </ion-toolbar>
 </ion-header>

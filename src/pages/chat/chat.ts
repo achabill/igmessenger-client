@@ -9,7 +9,6 @@ import { ProfilePage } from './../profile/profile';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
-var moment = require('moment');
 
 @Component({
   selector: 'page-chat',
@@ -46,41 +45,17 @@ export class ChatPage {
     console.log("Page Loaded");
   }
 
+  ionViewWillLeave() {
+    
+    if(this.vars.tempThread.autoTimer) {
+
+      this.setTimer(this.vars.autoTimerDefaultValue);
+    }
+  }
+
   goToProfile() {
 
     this.navCtrl.push(ProfilePage);
-  }
-
-  formatTimer(mins) {
-    var result = moment().subtract('minutes', mins).fromNow();
-    //2 minutes ago
-    //checkout moment.js
-    result = result.split(' ');
-    var value = result[0];
-    var unit = result[1];
-    var shortUnit = '';
-    switch (unit) {
-      case 'seconds':
-        shortUnit = 'secs';
-        break;
-      case 'minutes':
-        shortUnit = 'mins';
-        break;
-      case 'hours':
-        shortUnit = 'hors';
-        break;
-      case 'days':
-        shortUnit = 'days';
-        break;
-      case 'weeks':
-        shortUnit = 'weks';
-        break;
-      case 'months':
-        shortUnit = 'mnts'
-        break;
-    }
-    var time = value + ' ' + shortUnit;
-    return time;
   }
 
   setPhrase(phrase: string): any {
@@ -99,6 +74,7 @@ export class ChatPage {
     if (res) {
 
       //this.labelColor = label;
+      this.vars.toggleAutoTimer(false);
       this.presentToast("Timer was successfully set");
     } else {
 
@@ -110,6 +86,16 @@ export class ChatPage {
 
     let tempArray: any[] = [];
     this.presetPhrases = this.vars.getUserPhrases();
+    let tempObj = {
+      text: "Add Phrase.",
+      icon: "add-circle",
+      role: 'cancel',
+      handler: () => {
+        console.log('Archive clicked');
+        this.addPhrase();
+      }
+    }
+    tempArray.push(tempObj);
     if (this.presetPhrases.length > 0) {
       for (let i = 0; i < this.presetPhrases.length; i++) {
 
@@ -152,7 +138,7 @@ export class ChatPage {
       buttons: [
         {
           text: '20 Minutes',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('20mins Clicked');
             this.setTimer(20 * 60 * 1000);
@@ -160,7 +146,7 @@ export class ChatPage {
         },
         {
           text: '1 Hour',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('1hr Clicked');
             this.setTimer(60 * 60 * 1000);
@@ -168,7 +154,7 @@ export class ChatPage {
         },
         {
           text: '4 Hours',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('4hrs clicked');
             this.setTimer(4 * 60 * 60 * 1000);
@@ -176,7 +162,7 @@ export class ChatPage {
         },
         {
           text: '12 Hours',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('12hrs clicked');
             this.setTimer(12 * 60 * 60 * 1000);
@@ -184,7 +170,7 @@ export class ChatPage {
         },
         {
           text: '24 Hours',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('24hrs clicked');
             this.setTimer(24 * 60 * 60 * 1000);
@@ -192,7 +178,7 @@ export class ChatPage {
         },
         {
           text: '3 Days',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('3days clicked');
             this.setTimer(3 * 24 * 60 * 60 * 1000);
@@ -200,7 +186,7 @@ export class ChatPage {
         },
         {
           text: '7 Days',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('7days clicked');
             this.setTimer(7 * 24 * 60 * 60 * 1000);
@@ -208,7 +194,7 @@ export class ChatPage {
         },
         {
           text: '1 Month',
-          icon: "timer",
+          icon: "time",
           handler: () => {
             console.log('1month clicked');
             this.setTimer(30 * 24 * 60 * 60 * 1000);

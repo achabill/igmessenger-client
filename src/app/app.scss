@@ -41,6 +41,11 @@
     color: #444;
 }
 
+.colorWhite{
+
+    color: #fff !important;
+}
+
 .errorMsg{
 
     color: #ff1d49 !important;
@@ -150,9 +155,29 @@
     padding: 0 !important;
 }
 
-.chatBoxNav .toolbar-background{
+.chatBoxNav[color='labelGood'] .toolbar-background{
+
+    background-color: #61ef82 !important;
+}
+
+.chatBoxNav[color='labelMedium'] .toolbar-background{
+
+    background-color: #fbbd08 !important;
+}
+
+.chatBoxNav[color='labelBad'] .toolbar-background{
+
+    background-color: #ff1d49 !important;
+}
+
+.chatBoxNav[color='labelClear'] .toolbar-background{
 
     background-color: #488aff !important;
+}
+
+.toolbar-title{
+
+    color: white !important;
 }
 
 .chatBoxNav .back-button{
