@@ -293,5 +293,10 @@ page-profile .title .toolbar-title{
 .unreadThread{
 
     color: #ff0032 !important;
-    font-weight: bold;
+    font-weight: bold !important;
+}
+
+.unreadThreadButton{
+
+  background-color: #eee !important;
 }

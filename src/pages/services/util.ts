@@ -1,19 +1,24 @@
 import {Injectable} from "@angular/core";
 import { VarsService } from './../services/vars';
 
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { promises } from "fs";
+
 @Injectable()
 export class UtilService {
-  constructor(public vars: VarsService) {
-    
+  constructor(
+    public vars: VarsService,
+    public localNotifications: LocalNotifications) {
+
   }
 
   retrieveData() {
-   
+
     return "yes the thing worked";
   }
 
   objToArray(obj: any): any[] {
-   
+
     let keysArray = Object.keys(obj);
     let tempArray = [];
     for(let i = 0; i < keysArray.length; i++){
@@ -34,23 +39,77 @@ export class UtilService {
   }
 
   setCountDown(): void {
-   
-    setInterval(()=>{ 
 
-      for(let i = 0; i < this.vars.threads.length; i++){
+    for(let i = 0; i < this.vars.threads.length; i++){
 
-        if(this.vars.threads[i].threadTimer != null && this.vars.threads[i].threadTimer > 0){
+      this.setTimerInterval(this.vars.threads[i]);
+    }
+  }
 
-          this.vars.threads[i].threadTimer -= 1;
-        }
+  setTimerInterval(thread: any): void {
+
+   thread.timerHandle = setInterval(()=>{
+
+     if(thread.threadTimer != null && thread.threadTimer > 0){
+
+       thread.threadTimer -= 1;
+     }
+
+   }, 60000);
+  }
+
+  setNotificationAlert(): void {
+
+    this.localNotifications.hasPermission().then((permission)=>{
+
+      alert(permission);
+      if(permission){
+
+        this.setNotification();
+      }else{
+
+        this.localNotifications.requestPermission().then((requestedPermission)=>{
+
+          if(requestedPermission){
+
+            this.setNotification();
+          }else{
+
+            alert("You need to grant us permission to be able to receive notification.");
+          }
+        }).catch((e)=>{
+
+          alert("1");
+        });
       }
-    }, 60000);
+    }).catch((e)=>{
+
+      alert("2");
+    }); 
+  }
+
+  setNotification(): void {
+
+    this.vars.notificationHandle = setInterval(()=>{
+
+      this.localNotifications.schedule({
+        id: 1,
+        title: "My test app",
+        text: 'Single ILocalNotification from travis',
+        badge: 7,
+        vibrate: true,
+        priority: 2,
+        launch: true,
+        lockscreen: true,
+        data: { secret: "hello there... ho" }
+      });
+    }, this.vars.notificationTimerDefaultValue);
   }
 
   formatTimer(mins: number) {
-    
+
     if(mins > 0 && mins < 60) {
-      
+
       return mins+"mins";
     }else if(mins >= 60 && mins < 1440){
 

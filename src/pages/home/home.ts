@@ -145,7 +145,7 @@ export class HomePage {
 
                 autoTimerVal = false;
             }
-            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer, autoTimer: autoTimerVal, loadedData: false }));
+            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer, timerHandle: null,  autoTimer: autoTimerVal, loadedData: false }));
         }
         return tempArray;
     }
@@ -163,13 +163,14 @@ export class HomePage {
             this.vars.labeledThreads = this.util.objToArray(data.labels ? data.labels : []);
             this.vars.userTimers = this.util.objToArray(data.timers ? data.timers : []);
             this.vars.threads = this.parseThreads(data.threads);
-            //console.log(this.vars.threads);
+            console.log(this.vars.threads);
             if (data.phrases) {
 
                 //console.log(this.util.objToArray(data.phrases));
                 this.vars.setUserPhrases(this.util.objToArray(data.phrases));
             }
             this.util.setCountDown();
+            this.util.setNotificationAlert();
             this.loading.dismiss();
         });
     }

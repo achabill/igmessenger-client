@@ -4,6 +4,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -18,8 +19,8 @@ import { UtilService } from '../pages/services/util';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
- 
- 
+
+
 // AF2 Settings
 export const firebaseConfig = {
   apiKey: "AIzaSyA6GcvMSujVVXtEXfUsBljM6RtBW3v2dV8",
@@ -57,6 +58,7 @@ export const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    LocalNotifications,
     VarsService,
     UtilService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

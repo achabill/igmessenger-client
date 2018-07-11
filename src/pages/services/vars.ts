@@ -13,7 +13,9 @@ export class VarsService {
   public labeledThreads: any[];
   public userTimers: any[];
   public threads: any[] = [];
+  public notificationHandle: any;
   public autoTimerDefaultValue: number = 20 * 60 * 1000;
+  public notificationTimerDefaultValue: number = 2 * 60 * 1000;
   public serverHostAndPort: string = "http://45.77.225.86:1035";
   //public serverHostAndPort: string = "http://127.0.0.1:1035";
   public serverUserEndPoint: string = "/user";
@@ -74,12 +76,14 @@ export class VarsService {
 
   toggleAutoTimer(val: any): void {
 
-    if (val != null) {
+    if(!(this.tempThread.threadTimer != null && this.tempThread.threadTimer > 0)){
+      if (val != null) {
 
-      this.tempThread.autoTimer = val;
-    } else {
+        this.tempThread.autoTimer = val;
+      } else {
 
-      this.tempThread.autoTimer = !this.tempThread.autoTimer;
+        this.tempThread.autoTimer = !this.tempThread.autoTimer;
+      }
     }
   }
 

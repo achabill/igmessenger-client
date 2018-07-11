@@ -49,7 +49,7 @@
       </button> -->
 
     <ng-container *ngFor="let thread of vars.threads; let i = index">
-      <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)">
+      <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)" [ngClass]="{'unreadThreadButton': !thread.last_seen_at}">
         <ion-avatar item-start class="userImg {{thread.labelColor}}">
           <img src="{{thread.users[0].profile_pic_url}}">
         </ion-avatar>
