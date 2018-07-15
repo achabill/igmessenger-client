@@ -76,15 +76,16 @@ export class UtilService {
           }else{
 
             alert("You need to grant us permission to be able to receive notification.");
+            console.log("You need to grant us permission to be able to receive notification.");
           }
         }).catch((e)=>{
 
-          alert("1");
+          console.log("1");
         });
       }
     }).catch((e)=>{
 
-      alert("2");
+      console.log("2");
     }); 
   }
 

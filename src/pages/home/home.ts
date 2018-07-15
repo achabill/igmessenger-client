@@ -138,10 +138,10 @@ export class HomePage {
             let threadLabel = this.checkIfThreadIsLabeled(threads[i].thread_id);
             let threadTimer = this.checkIfThreadIsTimed(threads[i].thread_id);
             let autoTimerVal: boolean;
-            if (threadTimer == null || threadTimer < 1) {
+            if (threadTimer == null) {
 
                 autoTimerVal = true;
-            } else {
+            }else {
 
                 autoTimerVal = false;
             }

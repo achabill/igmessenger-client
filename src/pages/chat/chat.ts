@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 
 import { VarsService } from './../services/vars';
 import { UtilService } from './../services/util';
@@ -16,13 +16,16 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ChatPage {
 
+  private userIgThreadItemURI: string;
   private userPhraseURI: string;
   private userTimerURI: string;
-
+  private msgData: any;
+  public loading: any;
   public igDbObservable: Observable<{}>;
   public subscriptionHandle: any;
   public loaderHandle: any;
   public presetPhrases: any;
+  public threadItems: any;
 
   constructor(
     public navCtrl: NavController,
@@ -31,13 +34,24 @@ export class ChatPage {
     public util: UtilService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController
   ) {
 
+    this.resetMsgData();
     this.userPhraseURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/phrases";
     this.userTimerURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/timers/" + this.vars.tempThreadKey;
+    this.userIgThreadItemURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/threadItems/" + this.vars.tempThreadKey;
     this.presetPhrases = this.vars.getUserPhrases();
-    //this.setPhrase();
+    this.getThreadItems();
+  }
+
+  resetMsgData() {
+
+    this.msgData = {
+
+      text: ""
+    }
   }
 
   ionViewDidLoad() {
@@ -265,5 +279,75 @@ export class ChatPage {
 
     toast.present();
   }
+
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+        content: 'Loading threads...'
+    });
+
+    this.loading.present();
+}
+
+
+  getThreadItems() {
+
+    this.igDbObservable = this.afDatabase.object(this.userIgThreadItemURI).valueChanges();
+    this.presentLoadingDefault();
+    this.subscriptionHandle = this.igDbObservable.subscribe((data: any) => {
+
+        console.log(data);
+        this.threadItems = data;
+       
+        this.loading.dismiss();
+    });
+  }
+
+  parseDateObj(tStamp: any) {
+
+    //var tStamp = parseInt(tStamp)*1000;
+    var newDateObject = new Date(parseInt(tStamp) / 1000);
+    //EEEE, MMMM dd MMM yyyy @HH:mm:ss
+    return newDateObject;
+  }
+
+  showUsername(id: string): string {
+
+    if (id == this.vars.tempThread.users[0].pk){
+
+      return this.vars.tempThread.users[0].username;
+    }else{
+
+      return this.vars.getUserLoginInfo().username;
+    }
+  }
+
+parseFeedBrief(obj: any): string {
+
+    let brief: string;
+
+    if (obj.item_type == "text") {
+
+        brief = obj.text;
+
+    } else if (obj.item_type == "link") {
+
+        brief = "🔗 Link";
+
+    } else if (obj.item_type == "like") {
+
+        brief = "❤️ Like";
+
+    } else if (obj.item_type == "media_share") {
+
+        brief = "📷 Media Share";
+
+    } else {
+
+        brief = "📷 Media";
+    }
+
+    return brief;
+
+}
 
 }

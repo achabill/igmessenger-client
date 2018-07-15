@@ -33,22 +33,32 @@
 <ion-content>
     <ion-list>
 
-        <ion-item class="oneChatItem received">
-            <ion-avatar item-start>
-                <img src="/assets/imgs/img1.jpg">
-            </ion-avatar>
-            <h2 class="username">@mrbean</h2>
-            <p class="msg">I've had a pretty messed up day. If we just...</p>
-            <span class="time">22 May, 2017 @ 12:45</span>
-        </ion-item>
-
-        <ion-item class="oneChatItem sent">
-            <ion-avatar item-end>
-                <img src="/assets/imgs/img0.jpg">
-            </ion-avatar>
+        <!-- <ion-item class="oneChatItem">
             <h2 class="username">@finn</h2>
             <p class="msg">I've had a pretty messed up day. If we just...</p>
             <span class="time">22 May, 2017 @ 12:45</span>
+        </ion-item> -->
+
+         <!-- <ion-item class="oneChatItem">
+             <div class="oneChatItemDiv">
+                 <p class="msg">I've had a pretty messed up day. If we just...</p>
+                 <span class="time">22 May, 2017 @ 12:45</span>
+            </div>
+        </ion-item>
+
+        <ion-item class="oneChatItem received">
+                <div class="oneChatItemDiv">
+                    <p class="msg">I've had a pretty messed up day. If we just...</p>
+                    <span class="time">22 May, 2017 @ 12:45</span>
+               </div>
+           </ion-item> -->
+
+         <ion-item *ngFor="let threadItem of threadItems; let i = index" class="oneChatItem" [ngClass]="{'received': threadItem.user_id == vars.tempThread.users[0].pk}">
+                <div class="oneChatItemDiv">
+                    <p class="msg">{{parseFeedBrief(threadItem)}}</p>
+                    <span class="time">{{parseDateObj(threadItem.timestamp) | date:"dd/M/yy @HH:mm"}}</span>
+                </div>
+                <ion-icon item-end name="heart-outline" *ngIf="threadItem.user_id == vars.tempThread.users[0].pk" class="likeChatButton"></ion-icon>
         </ion-item>
 
 
@@ -60,11 +70,14 @@
         <ion-grid>
             <ion-row>
                 <ion-col col-10>
-                    <ion-input type="text" placeholder="Username" class="chatInput"></ion-input>
+                    <ion-input type="text" placeholder="Start typing..." [(ngModel)]="msgData.text" class="chatInput"></ion-input>
                 </ion-col>
                 <ion-col col-2>
-                    <button ion-button>
+                    <button ion-button *ngIf="msgData.text.length > 0">
                         <ion-icon name="send"></ion-icon>
+                    </button>
+                    <button ion-button *ngIf="msgData.text.length < 1">
+                        <ion-icon name="heart" class="sendHeart" ></ion-icon>
                     </button>
                 </ion-col>
             </ion-row>

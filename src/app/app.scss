@@ -225,14 +225,34 @@
     border-radius: 5px;
 }
 
-.oneChatItem .username{
+.oneChatItem{
 
-    font-weight: bold;
+    padding-left: 0;
+    text-align: right;
+    border-bottom: 0;
 }
 
-.oneChatItem.received .username{
+.oneChatItemDiv{
 
-    color: #2185d0;
+    background-color: #ccc;
+    border-radius: 20px 20px 0 20px;
+    padding: 10px;
+    max-width: 70%;
+    float: right;
+}
+
+.oneChatItem.received .oneChatItemDiv{
+
+    background-color: #488aff;
+    border-radius: 0 20px 20px 20px;
+    float: left;
+    text-align: left;
+}
+
+.oneChatItem .item-inner{
+
+    padding: 0 10px;
+    border-bottom: 0 !important;
 }
 
 .oneChatItem .msg{
@@ -240,14 +260,34 @@
     text-overflow: unset !important;
     overflow: unset !important;
     white-space: normal !important;
-    font-size: 15px;
+    font-size: 14px;
     color: #333;
+}
+
+.oneChatItem.received .msg{
+
+    color: #fff;
 }
 
 .oneChatItem .time{
 
-    font-size: 12px;
+    font-size: 11px;
     color: #777;
+}
+
+.oneChatItem.received .time{
+
+    color: #ccc;
+}
+
+.likeChatButton{
+
+    color: #bbb;
+}
+
+.sendHeart{
+
+    color: #ff0032;
 }
 
 .profileImg{

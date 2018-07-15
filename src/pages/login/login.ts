@@ -60,8 +60,8 @@ export class LoginPage {
 
     this.loginData = {
 
-      username: "",
-      password: "",
+      username: "lewismetuge",
+      password: "@mb17999",
       message: "Please enter your IG credentials",
       isMessageError: false
     }
@@ -103,6 +103,7 @@ export class LoginPage {
       if ((this.loginData.username == dataArray[i].username) && (CryptoJS.MD5(this.loginData.password).toString() == dataArray[i].password) && dataArray[i].isLoggedIn) {
 
         this.vars.setUserLoginInfo(dataArray[i]);
+        console.log(dataArray[i]);
         return true;
       }
     }
@@ -121,7 +122,8 @@ export class LoginPage {
 
         if (this.getUserFirebaseLoginStatus(data)) {
 
-          this.navCtrl.push(HomePage);
+          //this.navCtrl.push(HomePage);
+          this.navCtrl.setRoot(HomePage);
           //console.log(this.util.objToArray(data), CryptoJS.MD5("hello how are you doing"));
           this.loading.dismiss();
         } else {
