@@ -30,7 +30,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content #ChatContent>
     <ion-list>
 
         <!-- <ion-item class="oneChatItem">
@@ -53,12 +53,19 @@
                </div>
            </ion-item> -->
 
-         <ion-item *ngFor="let threadItem of threadItems; let i = index" class="oneChatItem" [ngClass]="{'received': threadItem.user_id == vars.tempThread.users[0].pk}">
+         <ion-item *ngFor="let threadItem of threadItems; let last = last" class="oneChatItem" [ngClass]="{'received': threadItem.user_id == vars.tempThread.users[0].pk}">
                 <div class="oneChatItemDiv">
                     <p class="msg">{{parseFeedBrief(threadItem)}}</p>
-                    <span class="time">{{parseDateObj(threadItem.timestamp) | date:"dd/M/yy @HH:mm"}}</span>
+                    <span class="time">{{parseDateObj(threadItem.timestamp) | date:"dd/M/yy @HH:mm"}} {{last ? scrollToBottom() : ''}}</span>
                 </div>
-                <ion-icon item-end name="heart-outline" *ngIf="threadItem.user_id == vars.tempThread.users[0].pk" class="likeChatButton"></ion-icon>
+        </ion-item>
+
+        <ion-item class="oneChatItem sendingChat" *ngIf="showSendingLoader">
+                <div class="oneChatItemDiv">
+                    <p class="msg">
+                        <img src="/assets/imgs/sending_loader.gif" class="sendingLoader">
+                        </p>
+                </div>
         </ion-item>
 
 
@@ -70,13 +77,13 @@
         <ion-grid>
             <ion-row>
                 <ion-col col-10>
-                    <ion-input type="text" placeholder="Start typing..." [(ngModel)]="msgData.text" class="chatInput"></ion-input>
+                    <ion-input type="text" placeholder="Start typing..." [(ngModel)]="msgData.text" maxlength="160" class="chatInput"></ion-input>
                 </ion-col>
                 <ion-col col-2>
-                    <button ion-button *ngIf="msgData.text.length > 0">
+                    <button ion-button *ngIf="msgData.text.length > 0" (click)="sendText()">
                         <ion-icon name="send"></ion-icon>
                     </button>
-                    <button ion-button *ngIf="msgData.text.length < 1">
+                    <button ion-button *ngIf="msgData.text.length < 1" (click)="sendLike()">
                         <ion-icon name="heart" class="sendHeart" ></ion-icon>
                     </button>
                 </ion-col>

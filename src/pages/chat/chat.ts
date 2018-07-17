@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { NavController, LoadingController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
+import { Component, ViewChild, AfterViewChecked } from '@angular/core';
+import { NavController, LoadingController, ActionSheetController, AlertController, ToastController, Content } from 'ionic-angular';
+import { Http } from '@angular/http';
 
 import { VarsService } from './../services/vars';
 import { UtilService } from './../services/util';
@@ -12,13 +13,18 @@ import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-chat',
-  templateUrl: 'chat.html'
+  templateUrl: 'chat.html',
 })
-export class ChatPage {
+export class ChatPage implements AfterViewChecked {
+
+  @ViewChild(Content) content: Content;
 
   private userIgThreadItemURI: string;
   private userPhraseURI: string;
   private userTimerURI: string;
+  private likeThreadURI: string;
+  private messageURI: string;
+  private seenURI: string;
   private msgData: any;
   public loading: any;
   public igDbObservable: Observable<{}>;
@@ -26,12 +32,14 @@ export class ChatPage {
   public loaderHandle: any;
   public presetPhrases: any;
   public threadItems: any;
+  public showSendingLoader: boolean;
 
   constructor(
     public navCtrl: NavController,
     public vars: VarsService,
     public afDatabase: AngularFireDatabase,
     public util: UtilService,
+    public http: Http,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
@@ -39,9 +47,13 @@ export class ChatPage {
   ) {
 
     this.resetMsgData();
+    this.showSendingLoader = false;
     this.userPhraseURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/phrases";
     this.userTimerURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/timers/" + this.vars.tempThreadKey;
     this.userIgThreadItemURI = "/igInfo/" + this.vars.getUserLoginInfo().id + "/threadItems/" + this.vars.tempThreadKey;
+    this.likeThreadURI = this.vars.serverHostAndPort + this.vars.serverLikeThreadEndpoint + "?threadId=" + this.vars.tempThreadKey;
+    this.messageURI = this.vars.serverHostAndPort + this.vars.serverMessageEndpoint + "?threadId=" + this.vars.tempThreadKey + "&text=";
+    this.seenURI = this.vars.serverHostAndPort + this.vars.serverSeenEndpoint + "?threadId=" + this.vars.tempThreadKey + "&threadItemId=" + this.vars.tempThread.items[0].item_id;
     this.presetPhrases = this.vars.getUserPhrases();
     this.getThreadItems();
   }
@@ -55,8 +67,14 @@ export class ChatPage {
   }
 
   ionViewDidLoad() {
-
+    console.log(this.content);
+    this.scrollToBottom();
+    //this.content.ionScrollEnd.;
   }
+
+  ngAfterViewChecked() {        
+    //this.scrollToBottom();        
+} 
 
   ionViewWillLeave() {
 
@@ -64,6 +82,13 @@ export class ChatPage {
 
       this.setTimer(this.vars.autoTimerDefaultValue);
     }
+  }
+
+  scrollToBottom(): void{
+
+    let dimensions: any;
+    dimensions = this.content.getContentDimensions();
+    this.content.scrollTo(0, dimensions.scrollHeight, 0);
   }
 
   goToProfile() {
@@ -106,7 +131,7 @@ export class ChatPage {
           text: this.presetPhrases[i].phrase,
           icon: "text",
           handler: () => {
-
+              this.sendPhrase(this.presetPhrases[i].phrase);
           }
         }
         tempArray.push(tempObj);
@@ -115,7 +140,7 @@ export class ChatPage {
     let addPhrase = {
       text: "Add Phrase.",
       icon: "add-circle",
-      role: 'cancel',
+      //role: 'cancel',
       handler: () => {
         this.addPhrase();
       }
@@ -296,6 +321,8 @@ export class ChatPage {
     this.subscriptionHandle = this.igDbObservable.subscribe((data: any) => {
 
         console.log(data);
+        this.showSendingLoader = false;
+        this.declareSeen();
         this.threadItems = data;
        
         this.loading.dismiss();
@@ -347,7 +374,65 @@ parseFeedBrief(obj: any): string {
     }
 
     return brief;
+}
 
+sendLike(): void{
+  
+  console.log(this.likeThreadURI);
+  this.showSendingLoader = true;
+  this.http.get(this.likeThreadURI).subscribe(res => {
+    console.log(res);
+  }, err => {
+
+    //this.showSendingLoader = false;
+  }, () => {
+
+    //this.showSendingLoader = false;
+  });
+}
+
+sendPhrase(phrase: string): void{
+  
+  let url = this.messageURI + phrase;
+  console.log(url);
+  this.showSendingLoader = true;
+  this.http.get(url).subscribe(res => {
+    console.log(res);
+  }, err => {
+
+    //this.showSendingLoader = false;
+  }, () => {
+
+    //this.showSendingLoader = false;
+  });
+}
+
+sendText(): void{
+  
+  if(this.msgData.text){
+
+    let url = this.messageURI + this.msgData.text;
+    console.log(url);
+    this.showSendingLoader = true;
+    this.resetMsgData();
+    this.http.get(url).subscribe(res => {
+    console.log(res);
+    }, err => {
+
+      //this.showSendingLoader = false;
+    }, () => {
+
+      //this.showSendingLoader = false;
+    });
+  }
+}
+
+declareSeen(): void{
+
+  console.log(this.seenURI);
+  this.http.get(this.seenURI).subscribe(res => {
+    console.log(res);
+  });
 }
 
 }

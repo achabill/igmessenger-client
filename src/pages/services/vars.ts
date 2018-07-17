@@ -19,6 +19,9 @@ export class VarsService {
   //public serverHostAndPort: string = "http://45.77.225.86:1035";
   public serverHostAndPort: string = "http://127.0.0.1:1035";
   public serverUserEndPoint: string = "/user";
+  public serverLikeThreadEndpoint: string = "/like";
+  public serverMessageEndpoint: string = "/message";
+  public serverSeenEndpoint: string = "/seen";
   public serverLoadMoreEndpoint: string = "/loadmore";
 
   constructor() {
