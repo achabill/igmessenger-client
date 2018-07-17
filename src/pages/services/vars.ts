@@ -15,7 +15,7 @@ export class VarsService {
   public threads: any[] = [];
   public notificationHandle: any;
   public autoTimerDefaultValue: number = 20 * 60 * 1000;
-  public notificationTimerDefaultValue: number = 2 * 60 * 1000;
+  public notificationTimerDefaultValue: number = 30 * 60 * 1000;
   //public serverHostAndPort: string = "http://45.77.225.86:1035";
   public serverHostAndPort: string = "http://127.0.0.1:1035";
   public serverUserEndPoint: string = "/user";

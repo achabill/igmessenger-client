@@ -170,6 +170,7 @@ export class HomePage {
                 this.vars.setUserPhrases(this.util.objToArray(data.phrases));
             }
             this.util.setCountDown();
+            console.log(this.util.getNumberOfTimedThreads());
             this.util.setNotificationAlert();
             this.loading.dismiss();
         });

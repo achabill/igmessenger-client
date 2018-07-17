@@ -89,20 +89,40 @@ export class UtilService {
     }); 
   }
 
+  getNumberOfTimedThreads(): any{
+    
+    let expiredCounter: number = 0;
+    let runningOutCounter: number = 0;
+
+    for(let i = 0; i < this.vars.threads.length; i++){
+
+      if(this.vars.threads[i].threadTimer < 0){
+
+        expiredCounter++;
+      }
+      if(this.vars.threads[i].threadTimer > 0){
+
+        runningOutCounter++;
+      }
+    }
+    return {expired: expiredCounter, runningOut: runningOutCounter};
+  }
+
   setNotification(): void {
 
     this.vars.notificationHandle = setInterval(()=>{
 
+      let countedThread: any = this.getNumberOfTimedThreads();
       this.localNotifications.schedule({
         id: 1,
-        title: "My test app",
-        text: 'Single ILocalNotification from travis',
-        badge: 7,
+        title: "TORS Timer Alert",
+        text: "You have " + countedThread.runningOut + " timers running out and " + countedThread.expired + " expired timers.",
+        badge: countedThread.runningOut + countedThread.expired,
         vibrate: true,
         priority: 2,
         launch: true,
         lockscreen: true,
-        data: { secret: "hello there... ho" }
+        data: { secret: countedThread }
       });
     }, this.vars.notificationTimerDefaultValue);
   }
