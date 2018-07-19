@@ -273,4 +273,13 @@ export class HomePage {
         this.navCtrl.push(ChatPage);
     }
 
+    logout(): void{
+
+        if(confirm("Do you want to log out?")){
+
+            window.localStorage[this.vars.appName] = null;
+            this.navCtrl.setRoot(HomePage);
+        }
+    }
+
 }

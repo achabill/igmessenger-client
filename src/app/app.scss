@@ -241,12 +241,31 @@
     float: right;
 }
 
+.oneChatItem.received .textImg{
+
+    border-radius: 0 20px 20px 20px;
+    width: 100%;
+    height: auto;
+}
+
+.oneChatItem .textImg{
+
+    border-radius: 20px 20px 0 20px;
+    width: 100%;
+    height: auto;
+}
+
 .oneChatItem.received .oneChatItemDiv{
 
     background-color: #488aff;
     border-radius: 0 20px 20px 20px;
     float: left;
     text-align: left;
+}
+
+.oneChatItem.received .textLink{
+
+    color: white
 }
 
 .oneChatItem .item-inner{

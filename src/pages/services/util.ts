@@ -62,7 +62,7 @@ export class UtilService {
 
     this.localNotifications.hasPermission().then((permission)=>{
 
-      alert(permission);
+      //alert(permission);
       if(permission){
 
         this.setNotification();

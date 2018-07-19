@@ -27,7 +27,8 @@ export class LoginPage {
     username: "",
     password: "",
     message: "Please enter your IG credentials",
-    isMessageError: false
+    isMessageError: false,
+    login: false
   };
 
   constructor(
@@ -63,7 +64,8 @@ export class LoginPage {
       username: "",
       password: "",
       message: "Please enter your IG credentials",
-      isMessageError: false
+      isMessageError: false,
+      login: false
     }
   }
 
@@ -103,6 +105,7 @@ export class LoginPage {
       if ((this.loginData.username == dataArray[i].username) && (CryptoJS.MD5(this.loginData.password).toString() == dataArray[i].password) && dataArray[i].isLoggedIn) {
 
         this.vars.setUserLoginInfo(dataArray[i]);
+        window.localStorage[this.vars.appName] = JSON.stringify(dataArray[i]);
         console.log(dataArray[i]);
         return true;
       }

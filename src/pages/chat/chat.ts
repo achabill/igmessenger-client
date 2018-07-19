@@ -33,6 +33,7 @@ export class ChatPage implements AfterViewChecked {
   public presetPhrases: any;
   public threadItems: any;
   public showSendingLoader: boolean;
+  public scrollControl: number;
 
   constructor(
     public navCtrl: NavController,
@@ -68,8 +69,8 @@ export class ChatPage implements AfterViewChecked {
 
   ionViewDidLoad() {
     console.log(this.content);
-    this.scrollToBottom();
-    //this.content.ionScrollEnd.;
+    this.content.scrollDownOnLoad = true;
+    //this.scrollToBottom();
   }
 
   ngAfterViewChecked() {        
@@ -84,11 +85,20 @@ export class ChatPage implements AfterViewChecked {
     }
   }
 
-  scrollToBottom(): void{
+  testFunction(){
 
-    let dimensions: any;
-    dimensions = this.content.getContentDimensions();
-    this.content.scrollTo(0, dimensions.scrollHeight, 0);
+    
+  }
+
+  scrollToBottom(val: any): void{
+    
+    // console.log(val, this.scrollControl);
+    // if(this.scrollControl > val){
+    //   let dimensions: any;
+    //   dimensions = this.content.getContentDimensions();
+    //   this.content.scrollTo(0, dimensions.scrollHeight, 0);
+    //   this.scrollControl = -1;
+    // }
   }
 
   goToProfile() {
@@ -131,7 +141,8 @@ export class ChatPage implements AfterViewChecked {
           text: this.presetPhrases[i].phrase,
           icon: "text",
           handler: () => {
-              this.sendPhrase(this.presetPhrases[i].phrase);
+
+              this.msgData.text = this.presetPhrases[i].phrase
           }
         }
         tempArray.push(tempObj);
@@ -270,7 +281,7 @@ export class ChatPage implements AfterViewChecked {
           text: 'Add',
           handler: data => {
             //console.log(data);
-            if (data.phrase && data.phrase.length > 5) {
+            if (data.phrase && data.phrase.length > 1) {
 
               if (this.setPhrase(data.phrase)) {
 
@@ -324,6 +335,7 @@ export class ChatPage implements AfterViewChecked {
         this.showSendingLoader = false;
         this.declareSeen();
         this.threadItems = data;
+        this.scrollControl = this.threadItems.length;
        
         this.loading.dismiss();
     });
@@ -368,12 +380,61 @@ parseFeedBrief(obj: any): string {
 
         brief = "📷 Media Share";
 
+    } else if (obj.item_type == "action_log") {
+
+      brief = obj.action_log.description;
+
     } else {
 
         brief = "📷 Media";
     }
 
     return brief;
+}
+
+parseThreadItem(obj: any): string {
+
+  let brief: any;
+
+  if (obj.item_type == "text") {
+
+      brief = obj.text;
+
+  } else if (obj.item_type == "link") {
+
+      brief = {
+
+          text: obj.link.text,
+          link_context: obj.link.link_context
+
+      };
+
+  } else if (obj.item_type == "like") {
+
+      brief = "❤️ Like";
+
+  } else if (obj.item_type == "media_share") {
+
+      brief = {
+
+         caption: obj.media_share.caption.text,
+         url: obj.media_share.image_versions2.candidates[1].url
+      };
+
+  } else if (obj.item_type == "action_log") {
+
+    brief = "@"+obj.action_log.description;
+
+  } else if (obj.item_type == "media") {
+
+    brief = obj.media.image_versions2.candidates[0].url;
+
+  } else {
+
+      brief = "📷 Media";
+  }
+
+  return brief;
 }
 
 sendLike(): void{
@@ -391,6 +452,8 @@ sendLike(): void{
   });
 }
 
+
+//not used for now
 sendPhrase(phrase: string): void{
   
   let url = this.messageURI + phrase;

@@ -8,6 +8,7 @@ export class VarsService {
   private userIgInfo: any;
   private userPhrases: any;
 
+  public appName: string = "torseApp";
   public tempThreadKey: string = null;
   public tempThread: any;
   public labeledThreads: any[];

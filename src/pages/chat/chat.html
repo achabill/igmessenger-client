@@ -53,10 +53,42 @@
                </div>
            </ion-item> -->
 
-         <ion-item *ngFor="let threadItem of threadItems; let last = last" class="oneChatItem" [ngClass]="{'received': threadItem.user_id == vars.tempThread.users[0].pk}">
+         <ion-item *ngFor="let threadItem of threadItems; let last = last; let index = index" class="oneChatItem" [ngClass]="{'received': threadItem.user_id == vars.tempThread.users[0].pk}">
                 <div class="oneChatItemDiv">
-                    <p class="msg">{{parseFeedBrief(threadItem)}}</p>
-                    <span class="time">{{parseDateObj(threadItem.timestamp) | date:"dd/M/yy @HH:mm"}} {{last ? scrollToBottom() : ''}}</span>
+
+                    <p *ngIf="threadItem.item_type == 'text'" class="msg">
+                        <span >{{parseThreadItem(threadItem)}}</span>
+                    </p>
+
+                    <p *ngIf="threadItem.item_type == 'action_log'" class="msg">
+                            <span ><i>{{parseThreadItem(threadItem)}}</i></span>
+                        </p>
+
+                    <p *ngIf="threadItem.item_type == 'media'" class="msg">
+                    <img src="{{parseThreadItem(threadItem)}}" class="textImg">
+                    </p>
+
+                    <p *ngIf="threadItem.item_type == 'media_share'" class="msg">
+                            <img src="{{parseThreadItem(threadItem).url}}" class="textImg">
+                            <span><b>{{parseThreadItem(threadItem).caption}}</b></span>
+                    </p>
+
+                    <p *ngIf="threadItem.item_type == 'link'" class="msg">
+                            <a href="{{parseThreadItem(threadItem).link_context.link_url}}" class="textLink">
+                                <img *ngIf="parseThreadItem(threadItem).link_context.link_image_url" src="{{parseThreadItem(threadItem).link_context.link_image_url}}" class="textImg">
+                            <p>
+                                <b *ngIf="parseThreadItem(threadItem).link_context.link_title" class="colorWhite">{{parseThreadItem(threadItem).link_context.link_title}}</b>
+                                <span *ngIf="parseThreadItem(threadItem).link_context.link_summary" class="colorWhite">{{parseThreadItem(threadItem).link_context.link_summary}}</span>
+                            </p>
+                            <p class="msg">{{parseThreadItem(threadItem).text}}</p>
+                            </a>
+                    </p>
+
+                    <p *ngIf="threadItem.item_type != 'text' && threadItem.item_type != 'link' && threadItem.item_type != 'media' && threadItem.item_type != 'media_share' && threadItem.item_type != 'action_log'" class="msg">
+                            <span >{{parseThreadItem(threadItem)}}</span>
+                    </p>
+
+                    <span class="time">{{parseDateObj(threadItem.timestamp) | date:"dd/M/yy @HH:mm"}}</span>
                 </div>
         </ion-item>
 
