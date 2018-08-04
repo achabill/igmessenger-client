@@ -17,13 +17,14 @@ export class VarsService {
   public notificationHandle: any;
   public autoTimerDefaultValue: number = 20 * 60 * 1000;
   public notificationTimerDefaultValue: number = 30 * 60 * 1000;
-  //public serverHostAndPort: string = "http://45.77.225.86:1035";
-  public serverHostAndPort: string = "http://127.0.0.1:1035";
+  public serverHostAndPort: string = "http://45.77.225.86:1035";
+  //public serverHostAndPort: string = "http://127.0.0.1:1035";
   public serverUserEndPoint: string = "/user";
   public serverLikeThreadEndpoint: string = "/like";
   public serverMessageEndpoint: string = "/message";
   public serverSeenEndpoint: string = "/seen";
   public serverLoadMoreEndpoint: string = "/loadmore";
+  public serverRefreshEndpoint: string = "/refresh";
 
   constructor() {
 
@@ -80,7 +81,7 @@ export class VarsService {
 
   toggleAutoTimer(val: any): void {
 
-    if(!(this.tempThread.threadTimer != null && this.tempThread.threadTimer > 0)){
+    if (!(this.tempThread.threadTimer != null && this.tempThread.threadTimer > 0)) {
       if (val != null) {
 
         this.tempThread.autoTimer = val;
@@ -97,5 +98,9 @@ export class VarsService {
   }
   getLoadMoreEndpoint(): string {
     return this.serverHostAndPort + this.serverLoadMoreEndpoint;
+  }
+
+  getServerRefreshEndpoint(): string {
+    return this.serverHostAndPort + this.serverRefreshEndpoint;
   }
 }

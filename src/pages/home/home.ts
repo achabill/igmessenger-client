@@ -141,11 +141,11 @@ export class HomePage {
             if (threadTimer == null) {
 
                 autoTimerVal = true;
-            }else {
+            } else {
 
                 autoTimerVal = false;
             }
-            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer, timerHandle: null,  autoTimer: autoTimerVal, loadedData: false }));
+            tempArray.push(Object.assign({}, threads[i], { visibleBasedOnSearch: true, labelColor: threadLabel, threadTimer: threadTimer, timerHandle: null, autoTimer: autoTimerVal, loadedData: false }));
         }
         return tempArray;
     }
@@ -174,6 +174,25 @@ export class HomePage {
             this.util.setNotificationAlert();
             this.loading.dismiss();
         });
+    }
+
+
+    isUnreadThread(thread): boolean {
+        if (!thread.last_seen_at) {
+            return true;
+        }
+        var key = Object.keys(thread.last_seen_at)[0];
+        if (thread.last_seen_at[key]['item_id'] != thread.items[0].item_id) {
+            return true;
+        }
+        return false;
+    }
+    getUnreadThreadButtonClass(thread): string {
+        return this.isUnreadThread(thread) ? 'unreadThreadButton' : '';
+    }
+
+    getUnreadThreadTextClass(thread): string {
+        return this.isUnreadThread(thread) ? 'unreadThread' : '';
     }
 
     searchFeed(): void {
@@ -253,16 +272,26 @@ export class HomePage {
     }
 
     refreshThreads(): void {
-
-        for (let i = 0; i < this.vars.threads.length; i++) {
-
-            this.vars.threads[i].visibleBasedOnSearch = true;
-        }
-        this.vars.threads.sort((a: any, b: any): number => {
-
-            return b.items[0].timestamp - a.items[0].timestamp;
+        //this.presentLoadingDefault();
+        let loading = this.loadingCtrl.create({
+            content: 'Synchronizing with Instagram. Please wait...'
         });
-        this.activeSortLabel = " ";
+
+        loading.present();
+        this.http.get(this.vars.getServerRefreshEndpoint()).subscribe(res => {
+            console.log(res);
+            for (let i = 0; i < this.vars.threads.length; i++) {
+
+                this.vars.threads[i].visibleBasedOnSearch = true;
+            }
+            this.vars.threads.sort((a: any, b: any): number => {
+
+                return b.items[0].timestamp - a.items[0].timestamp;
+            });
+            this.activeSortLabel = " ";
+            console.log('loading dismiss');
+            loading.dismiss();
+        })
     }
 
     goToChats(index: number, thread: any) {
@@ -273,9 +302,9 @@ export class HomePage {
         this.navCtrl.push(ChatPage);
     }
 
-    logout(): void{
+    logout(): void {
 
-        if(confirm("Do you want to log out?")){
+        if (confirm("Do you want to log out?")) {
 
             window.localStorage[this.vars.appName] = null;
             this.navCtrl.setRoot(HomePage);

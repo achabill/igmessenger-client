@@ -49,12 +49,12 @@
       </button> -->
 
     <ng-container *ngFor="let thread of vars.threads; let i = index">
-      <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)" [ngClass]="{'unreadThreadButton': !thread.last_seen_at}">
+      <button ion-item *ngIf="thread.visibleBasedOnSearch" (click)="goToChats(i, thread)" [ngClass]="getUnreadThreadButtonClass(thread)">
         <ion-avatar item-start class="userImg {{thread.labelColor}}">
           <img src="{{thread.users[0].profile_pic_url}}">
         </ion-avatar>
         <h2 class="usernameItem">{{thread.users[0].full_name}}</h2>
-        <h3 class="sampleItem" [ngClass]="{'unreadThread': !thread.last_seen_at}">{{parseFeedBrief(thread.items[0])}}</h3>
+        <h3 class="sampleItem" [ngClass]="getUnreadThreadTextClass(thread)">{{parseFeedBrief(thread.items[0])}}</h3>
         <p class="timeItem">{{parseDateObj(thread.items[0].timestamp) | date:"dd/M/yy @HH:mm"}}</p>
         <div item-end class="centerText briefItem" *ngIf="vars.threads[i].threadTimer != null && vars.threads[i].threadTimer > 0">
           <ion-icon name="stopwatch"></ion-icon>
