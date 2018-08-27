@@ -123,6 +123,7 @@ export class ChatPage implements AfterViewChecked {
 
       //this.labelColor = label;
       this.vars.toggleAutoTimer(false);
+      this.vars.tempThread.threadTimer = duration/60000;
       this.presentToast("Timer was successfully set");
     } else {
 
@@ -437,6 +438,15 @@ parseThreadItem(obj: any): string {
   return brief;
 }
 
+resetAutoRunningTimer(): void{
+
+  let intTimer = parseInt(this.vars.tempThread.threadTimer);
+  if(intTimer > 0 && intTimer < 20){
+
+    this.setTimer(this.vars.autoTimerDefaultValue);
+  }
+}
+
 sendLike(): void{
   
   console.log(this.likeThreadURI);
@@ -450,6 +460,8 @@ sendLike(): void{
 
     //this.showSendingLoader = false;
   });
+  console.log("newtest",this.vars.tempThread);
+  this.resetAutoRunningTimer();
 }
 
 
@@ -468,6 +480,7 @@ sendPhrase(phrase: string): void{
 
     //this.showSendingLoader = false;
   });
+  this.resetAutoRunningTimer();
 }
 
 sendText(): void{
@@ -487,6 +500,7 @@ sendText(): void{
 
       //this.showSendingLoader = false;
     });
+    this.resetAutoRunningTimer();
   }
 }
 
